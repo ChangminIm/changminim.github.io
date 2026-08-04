@@ -88,6 +88,7 @@ details.topic[open] .t-arrow{transform:rotate(90deg)}
 .badge{flex-shrink:0;font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px}
 .b-slide{background:var(--accent-soft);color:var(--accent)}
 .b-map{background:var(--green-soft);color:var(--green)}
+.b-pdf{background:#f3eefb;color:#6b46c1}
 .b-lock{background:var(--amber-soft);color:var(--amber)}
 .item .date{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)}
 .item p{font-size:13px;color:var(--muted);margin-top:4px}
@@ -264,6 +265,21 @@ const CATEGORIES = [
 ];
 
 const ITEMS = [
+  { id:'jik-korea-2026-08', cat:'special', date:'2026.08', type:'pdf',
+    title:'바이브 코딩으로 완성하는 지리 수업·평가 자료 제작',
+    desc:'강원도 중등 교과교육 역량강화 직무연수 (고려대학교, 2026.8.5.) — 바이브 코딩으로 지리 수업·평가 자료를 직접 만드는 실습형 연수. 74쪽.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9rdTA4MDQuaHRtbA==' },
+
+  { id:'jys-kongju-2026-07', cat:'special', date:'2026.07', type:'pdf',
+    title:'"도시의 미래탐구"와 바이브코딩',
+    desc:'하계 1급 정교사 자격연수 지리반 (국립공주대학교, 2026.7.29.–31.) — 도시의 미래탐구 주제와 바이브 코딩 활용 수업 설계. 93쪽.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9rajA3MjkuaHRtbA==' },
+
+  { id:'vibe-env-2026-06', cat:'special', date:'2026.06', type:'pdf',
+    title:'바이브 코딩 개발 환경 준비',
+    desc:'연수 사전 준비 안내 (2026.6.22.) — 구글·깃허브·커서 계정 준비와 개발 환경 설치 가이드. 15쪽.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9lbnYwNjIyLmh0bWw=' },
+
   { id:'ws-2026-08', cat:'project', date:'2026.08', type:'slide',
     title:'소아비만 시공간 분석에 기반한 중재 후보지역 검토',
     desc:'제3차 정례 워크숍 발표 — 발생 핫스팟 분석(EHSA)과 1차 후보지역 30곳 · 지역환경 요인 분석(MGTWR) · 교차 검토 · 이동기록 앱 \'아이걸음\' 개발. 횡스크롤 35장.',
@@ -296,7 +312,6 @@ const $ = s => document.querySelector(s);
 const LS_MASTER = 'pa_master_v1';
 const LS_VAULT  = 'pa_vault_v1';
 const LS_TOKEN  = 'pa_gh_token_v1';
-const SS_OK     = 'pa_ok_';
 
 let LOCKS = null;           // { master:'해시', items:{ id:'해시'|null } }
 let locksLoadFailed = false;
@@ -307,7 +322,8 @@ async function sha256(text){
 }
 const itemHash   = it => LOCKS && LOCKS.items ? (LOCKS.items[it.id] || null) : null;
 const isMaster   = () => !!LOCKS && localStorage.getItem(LS_MASTER) === LOCKS.master;
-const isUnlocked = it => !locksLoadFailed && (!itemHash(it) || isMaster() || sessionStorage.getItem(SS_OK + it.id) === '1');
+/* 잠긴 자료는 마스터가 아닌 한 항상 비밀번호를 물어봄 (기억하지 않음) */
+const isUnlocked = it => !locksLoadFailed && (!itemHash(it) || isMaster());
 const decodeUrl  = b64 => decodeURIComponent(escape(atob(b64)));
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 
@@ -368,9 +384,10 @@ function renderItem(it){
   el.className = 'item';
   const typeBadge = it.type === 'map'
     ? '<span class="badge b-map">스토리맵</span>'
+    : it.type === 'pdf'
+    ? '<span class="badge b-pdf">PDF</span>'
     : '<span class="badge b-slide">슬라이드</span>';
-  const locked = itemHash(it) && !isUnlocked(it);
-  const lockBadge = itemHash(it) ? `<span class="badge b-lock">${locked ? '🔒 비밀번호' : '🔓 열림'}</span>` : '';
+  const lockBadge = itemHash(it) ? '<span class="badge b-lock">🔒 비밀번호</span>' : '';
   el.innerHTML = `
     <div class="row1">
       <h3>${esc(it.title)}</h3>
@@ -378,7 +395,7 @@ function renderItem(it){
       <span class="date">${it.date}</span>
     </div>
     <p>${esc(it.desc)}</p>
-    <span class="go">${it.type === 'map' ? '스토리맵' : '슬라이드'} 열기 →</span>`;
+    <span class="go">${it.type === 'map' ? '스토리맵' : it.type === 'pdf' ? '자료' : '슬라이드'} 열기 →</span>`;
   el.addEventListener('click', () => {
     if (isUnlocked(it)) location.href = decodeUrl(it.url);
     else openModal(it);
@@ -414,10 +431,9 @@ async function submitModal(){
     return;
   }
   if (modalTarget !== 'master' && hash === itemHash(modalTarget)){
-    sessionStorage.setItem(SS_OK + modalTarget.id, '1');
-    const t = modalTarget;
-    closeModal(); render();
-    location.href = decodeUrl(t.url);
+    /* 1회용 티켓 — 이동한 페이지의 게이트가 한 번 확인 후 즉시 폐기 (기억 안 함) */
+    sessionStorage.setItem('pa_ticket_' + modalTarget.id, '1');
+    location.href = decodeUrl(modalTarget.url);
     return;
   }
   $('#m-err').classList.add('show');

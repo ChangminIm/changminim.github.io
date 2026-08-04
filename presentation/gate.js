@@ -8,7 +8,7 @@
   var SALT = 'changminim/pa/v1|';
   var ITEM = (document.currentScript && document.currentScript.getAttribute('data-item')) || '';
   var LS_MASTER = 'pa_master_v1';
-  var SS_OK = 'pa_ok_' + ITEM;
+  var SS_TICKET = 'pa_ticket_' + ITEM;   // 아카이브에서 방금 인증한 1회용 티켓 (사용 즉시 소멸)
 
   /* 검증 전까지 페이지 숨김 */
   var hide = document.createElement('style');
@@ -21,6 +21,8 @@
     if (h) h.remove();
     var ov = document.getElementById('pa-gate');
     if (ov) ov.remove();
+    window.PA_OPEN = true;
+    try { document.dispatchEvent(new CustomEvent('pa:open')); } catch (e) {}
   }
 
   function sha256(text) {
@@ -82,8 +84,7 @@
             localStorage.setItem(LS_MASTER, hash);
             reveal();
           } else if (itemHash && hash === itemHash) {
-            sessionStorage.setItem(SS_OK, '1');
-            reveal();
+            reveal();   /* 저장하지 않음 — 다음 방문 때 다시 물어봄 */
           } else {
             err.style.display = 'block';
             input.select();
@@ -102,7 +103,10 @@
       var itemHash = (locks.items && locks.items[ITEM]) || null;
       if (!itemHash) { reveal(); return; }                                  // 공개 자료
       if (localStorage.getItem(LS_MASTER) === locks.master) { reveal(); return; }  // 마스터
-      if (sessionStorage.getItem(SS_OK) === '1') { reveal(); return; }      // 이미 인증됨
+      if (sessionStorage.getItem(SS_TICKET) === '1') {                      // 아카이브에서 방금 인증
+        sessionStorage.removeItem(SS_TICKET);                               // 1회용 — 즉시 소멸
+        reveal(); return;
+      }
       showGate(itemHash, locks.master);
     })
     .catch(function () {
