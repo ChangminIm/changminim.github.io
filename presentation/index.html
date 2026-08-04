@@ -204,8 +204,11 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 4
     </div>
     <div class="a-note">
       토큰 만들기: <code>github.com → Settings → Developer settings → Fine-grained tokens</code> →
-      Repository access를 <code>changminim.github.io</code> 하나로 제한 → Permissions에서 <code>Contents: Read and write</code>만 부여.
-      토큰은 이 브라우저의 localStorage에만 저장됩니다. 토큰이 없으면 변경 사항이 파일로 다운로드되며, GitHub에서 <code>presentation/locks.json</code>을 직접 교체하면 됩니다.
+      Repository access에서 <code>changminim.github.io</code>와 <code>presentation-passwords</code> 두 개 선택 →
+      Permissions에서 <code>Contents: Read and write</code>만 부여.
+      토큰은 이 브라우저의 localStorage에만 저장됩니다. 토큰이 있으면 ① 비밀번호 변경이 사이트에 자동 반영되고
+      ② 바꾼 비밀번호 원문이 비공개 저장소 <code>presentation-passwords/PASSWORDS.md</code>에 자동 기록됩니다.
+      토큰이 없으면 변경 사항이 파일로 다운로드되며, GitHub에서 <code>presentation/locks.json</code>을 직접 교체하면 됩니다.
     </div>
 
     <h3>4. 비밀번호 보관함 (이 브라우저에만 저장)</h3>
@@ -256,6 +259,8 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 4
 
 const SALT = 'changminim/pa/v1|';
 const REPO_API = 'https://api.github.com/repos/ChangminIm/changminim.github.io/contents/presentation/locks.json';
+/* 비밀번호 원문 자동 기록처 — 비공개 저장소 (본인 GitHub 계정만 열람 가능) */
+const PWLOG_API = 'https://api.github.com/repos/ChangminIm/presentation-passwords/contents/PASSWORDS.md';
 
 const CATEGORIES = [
   { id:'conference', name:'학회',          sub:'학술대회 · 학회 발표' },
@@ -491,6 +496,32 @@ async function commitLocks(message){
   }
 }
 
+/* ---------- 관리자: 비밀번호 원문 자동 백업 (비공개 저장소) ---------- */
+async function logPassword(label, pw){
+  const token = localStorage.getItem(LS_TOKEN);
+  if (!token) return false;
+  try{
+    const headers = { 'Authorization':'Bearer ' + token, 'Accept':'application/vnd.github+json' };
+    const cur = await fetch(PWLOG_API, { headers, cache:'no-store' });
+    let sha, text = '# 발표자료 아카이브 — 비밀번호 기록\n\n## 변경 기록\n';
+    if (cur.ok){
+      const j = await cur.json();
+      sha = j.sha;
+      text = decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
+    }
+    const now = new Date();
+    const stamp = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' +
+      String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' +
+      String(now.getMinutes()).padStart(2,'0');
+    text += '\n- ' + stamp + ' · ' + label + ' → `' + pw + '`';
+    const body = { message: '비밀번호 기록: ' + label,
+      content: btoa(unescape(encodeURIComponent(text + '\n'))) };
+    if (sha) body.sha = sha;
+    const res = await fetch(PWLOG_API, { method:'PUT', headers, body: JSON.stringify(body) });
+    return res.ok;
+  }catch(e){ return false; }
+}
+
 /* ---------- 관리자: 자료별 비밀번호 표 ---------- */
 function renderLockTable(){
   const wrap = $('#lock-tbl');
@@ -518,7 +549,11 @@ function renderLockTable(){
       LOCKS.items[id] = await sha256(pw);
       vaultAdd(it.title, pw);
       render();
-      await commitLocks('비밀번호 설정: ' + it.title);
+      const saved = await commitLocks('비밀번호 설정: ' + it.title);
+      const logged = await logPassword(it.title, pw);
+      if (saved) setStatus(true, logged
+        ? '저장 완료 — 사이트 반영 1~2분. 비밀번호가 비공개 기록소(PASSWORDS.md)에도 자동 백업되었습니다.'
+        : '저장 완료 — 사이트 반영 1~2분. 단, 비공개 기록소 백업은 실패했습니다 (토큰에 presentation-passwords 권한이 있는지 확인).');
     });
     const openBtn = tr.querySelector('.open');
     if (openBtn) openBtn.addEventListener('click', async () => {
@@ -540,7 +575,11 @@ $('#master-btn').addEventListener('click', async () => {
   vaultAdd('★ 마스터키', pw);
   $('#new-master').value = '';
   render();
-  await commitLocks('마스터키 변경');
+  const saved = await commitLocks('마스터키 변경');
+  const logged = await logPassword('★ 마스터키', pw);
+  if (saved) setStatus(true, logged
+    ? '마스터키 변경 완료 — 비공개 기록소에도 자동 백업되었습니다.'
+    : '마스터키 변경 완료 — 단, 비공개 기록소 백업은 실패했습니다. 새 마스터키를 꼭 따로 적어두세요!');
 });
 
 /* ---------- 관리자: GitHub 토큰 ---------- */
