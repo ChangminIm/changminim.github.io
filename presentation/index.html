@@ -23,12 +23,15 @@
   --accent-soft:#eaf0fa;
   --green:#00a44f;       /* KNU 녹색 */
   --green-soft:#e8f6ee;
+  --amber:#b8860b;
+  --amber-soft:#fdf3dc;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{font-family:'Noto Sans KR',sans-serif;background:var(--bg);color:var(--ink);
   line-height:1.6;word-break:keep-all}
 a{color:inherit;text-decoration:none}
+button{font-family:inherit}
 .mono{font-family:'IBM Plex Mono',monospace}
 
 .topbar{height:4px;background:linear-gradient(90deg,var(--accent) 0%,var(--accent) 55%,var(--green) 100%)}
@@ -42,10 +45,13 @@ header{border-bottom:1px solid var(--line);background:#fff}
 .head-in .home{display:inline-block;margin-top:12px;font-size:13px;color:var(--muted);
   border:1px solid var(--line);border-radius:999px;padding:5px 14px;transition:.15s}
 .head-in .home:hover{color:var(--accent);border-color:var(--accent)}
+#master-badge{display:none;margin-top:12px;margin-left:8px;font-size:13px;font-weight:700;
+  color:var(--amber);background:var(--amber-soft);border:1px solid #ecd9a8;
+  border-radius:999px;padding:5px 14px;vertical-align:bottom}
 
 main{max-width:900px;margin:0 auto;padding:28px 24px 60px}
 
-/* 주제 아코디언 */
+/* 주제(섹션) 아코디언 */
 details.topic{background:var(--card);border:1px solid var(--line);border-radius:14px;
   margin-bottom:18px;overflow:hidden;box-shadow:0 2px 10px rgba(28,36,48,.04)}
 details.topic summary{list-style:none;cursor:pointer;padding:20px 24px;
@@ -61,23 +67,93 @@ details.topic[open] .t-arrow{transform:rotate(90deg)}
 .t-count{margin-left:auto;flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:12px;
   color:var(--green);background:var(--green-soft);border-radius:999px;padding:3px 11px}
 .t-body{border-top:1px solid var(--line);padding:8px 24px 20px}
+.t-empty{padding:14px 6px 8px;font-size:13px;color:var(--muted)}
+
+/* 연도 소제목 */
+.year-h{display:flex;align-items:center;gap:10px;margin:18px 0 4px}
+.year-h:first-child{margin-top:10px}
+.year-h .y{font-family:'IBM Plex Mono',monospace;font-size:14px;font-weight:700;color:var(--accent)}
+.year-h .rule{flex:1;height:1px;background:var(--line)}
+.year-h .n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
 
 /* 자료 행 */
-.item{display:block;padding:16px 6px;border-bottom:1px solid var(--line);transition:.12s}
+.item{display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
+  padding:16px 6px;border-bottom:1px solid var(--line);transition:.12s;
+  font-size:inherit;color:inherit;line-height:inherit}
 .item:last-child{border-bottom:none}
 .item:hover{background:#f7f9fb;border-radius:8px}
 .item .row1{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
-.item h3{font-size:15.5px;font-weight:700}
+.item h3{font-size:15.5px;font-weight:700;display:inline}
 .item:hover h3{color:var(--accent)}
 .badge{flex-shrink:0;font-size:11px;font-weight:700;border-radius:5px;padding:2px 8px}
 .b-slide{background:var(--accent-soft);color:var(--accent)}
 .b-map{background:var(--green-soft);color:var(--green)}
+.b-lock{background:var(--amber-soft);color:var(--amber)}
 .item .date{margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--muted)}
 .item p{font-size:13px;color:var(--muted);margin-top:4px}
 .item .go{font-size:12.5px;color:var(--accent);font-weight:700;margin-top:6px;display:inline-block}
 
+/* 비밀번호 모달 */
+#overlay{position:fixed;inset:0;background:rgba(28,36,48,.45);display:none;
+  align-items:center;justify-content:center;padding:24px;z-index:50}
+#overlay.show{display:flex}
+.modal{background:#fff;border-radius:16px;max-width:420px;width:100%;padding:28px;
+  box-shadow:0 18px 60px rgba(28,36,48,.25)}
+.modal .m-kicker{font-family:'IBM Plex Mono',monospace;font-size:11.5px;letter-spacing:.1em;
+  color:var(--green);margin-bottom:6px}
+.modal h2{font-size:17px;font-weight:900;margin-bottom:4px}
+.modal .m-name{font-size:13px;color:var(--muted);margin-bottom:16px}
+.modal input[type=password]{width:100%;border:1.5px solid var(--line);border-radius:10px;
+  padding:11px 14px;font-size:15px;font-family:'IBM Plex Mono',monospace;outline:none}
+.modal input[type=password]:focus{border-color:var(--accent)}
+.m-err{display:none;font-size:12.5px;color:#c23b3b;margin-top:8px}
+.m-err.show{display:block}
+.m-btns{display:flex;gap:10px;margin-top:18px}
+.m-btns button{flex:1;border:none;border-radius:10px;padding:11px 0;font-size:14px;
+  font-weight:700;cursor:pointer;transition:.15s}
+.m-ok{background:var(--accent);color:#fff}
+.m-ok:hover{background:#173571}
+.m-cancel{background:#eef1f4;color:var(--muted)}
+.m-hint{font-size:11.5px;color:var(--muted);margin-top:14px;text-align:center}
+
+/* 관리자 패널 */
+#admin{display:none;background:var(--card);border:1.5px solid #ecd9a8;border-radius:14px;
+  margin-top:34px;padding:24px;box-shadow:0 2px 10px rgba(28,36,48,.04)}
+#admin.show{display:block}
+#admin h2{font-size:16px;font-weight:900;color:var(--amber);margin-bottom:2px}
+#admin .a-sub{font-size:12.5px;color:var(--muted);margin-bottom:18px}
+#admin h3{font-size:13.5px;font-weight:700;margin:22px 0 8px}
+.a-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.a-row input{flex:1;min-width:150px;border:1.5px solid var(--line);border-radius:8px;
+  padding:8px 12px;font-size:13.5px;outline:none}
+.a-row input:focus{border-color:var(--accent)}
+.a-btn{border:none;border-radius:8px;padding:8px 16px;font-size:13px;
+  font-weight:700;cursor:pointer;background:var(--accent);color:#fff}
+.a-btn:disabled{opacity:.5;cursor:default}
+.a-mini{border:none;border-radius:8px;background:#eef1f4;color:var(--muted);
+  padding:5px 12px;font-size:12px;font-weight:700;cursor:pointer}
+table.a-tbl{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px}
+table.a-tbl th{text-align:left;font-size:11.5px;color:var(--muted);font-weight:500;
+  border-bottom:1px solid var(--line);padding:4px 8px}
+table.a-tbl td{border-bottom:1px solid var(--line);padding:8px;vertical-align:middle}
+table.a-tbl td.pw{font-family:'IBM Plex Mono',monospace}
+table.a-tbl input{width:130px;border:1.5px solid var(--line);border-radius:7px;
+  padding:5px 9px;font-size:12.5px;outline:none;font-family:'IBM Plex Mono',monospace}
+table.a-tbl .st-lock{color:var(--amber);font-weight:700;white-space:nowrap}
+table.a-tbl .st-open{color:var(--green);font-weight:700;white-space:nowrap}
+table.a-tbl .del{background:none;border:none;color:#c23b3b;cursor:pointer;font-size:12px}
+.a-note{font-size:11.5px;color:var(--muted);margin-top:8px}
+.a-note code{font-family:'IBM Plex Mono',monospace;background:#f5f7f9;border-radius:4px;padding:1px 5px}
+#gh-status{font-size:12px;font-weight:700;margin-left:4px}
+#save-status{display:none;margin-top:12px;font-size:12.5px;border-radius:8px;padding:9px 13px}
+#save-status.ok{display:block;background:var(--green-soft);color:var(--green)}
+#save-status.err{display:block;background:#fdeaea;color:#c23b3b}
+.a-foot{display:flex;gap:8px;margin-top:24px;flex-wrap:wrap}
+
 footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 44px;
   border-top:1px solid var(--line)}
+#key-link{cursor:pointer;opacity:.55;transition:.15s;margin-left:8px}
+#key-link:hover{opacity:1}
 @media(max-width:640px){
   .head-in{flex-direction:column;align-items:flex-start;gap:14px}
   .head-in h1{font-size:24px}
@@ -96,82 +172,418 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 4
       <h1>발표자료 아카이브</h1>
       <p>임창민 (국립공주대학교 지리학과)</p>
       <a class="home" href="https://changminim.com/">← changminim.com</a>
+      <span id="master-badge">🔑 관리자 모드</span>
     </div>
   </div>
 </header>
 
 <main>
+  <div id="list"></div>
 
-  <!-- 주제 1: 소아비만 -->
-  <details class="topic">
-    <summary>
-      <span class="t-arrow">▶</span>
-      <span>
-        <div class="t-title">소아비만 지역 건강격차 연구</div>
-        <div class="t-sub">「소아비만 지역별 건강격차 해소를 위한 중재프로그램 개발 및 실증연구」 — EHSA · MGTWR · 아이걸음</div>
-      </span>
-      <span class="t-count">5</span>
-    </summary>
-    <div class="t-body">
+  <!-- 관리자 패널: 마스터키 입력 시에만 표시 -->
+  <section id="admin">
+    <h2>🔑 관리자 도구</h2>
+    <div class="a-sub">마스터키로 로그인한 이 브라우저에서만 보입니다. 여기서 바꾼 비밀번호는 GitHub에 자동 저장되어 사이트 전체에 적용됩니다.</div>
 
-      <a class="item" href="https://changminim.com/obesity-platform/obesity_MGTWR/storymap/workshop.html">
-        <div class="row1">
-          <h3>소아비만 시공간 분석에 기반한 중재 후보지역 검토</h3>
-          <span class="badge b-slide">슬라이드</span>
-          <span class="date">2026.08</span>
-        </div>
-        <p>제3차 정례 워크숍 발표 — 발생 핫스팟 분석(EHSA)과 1차 후보지역 30곳 · 지역환경 요인 분석(MGTWR) · 교차 검토 · 이동기록 앱 '아이걸음' 개발. 횡스크롤 35장.</p>
-        <span class="go">슬라이드 열기 →</span>
-      </a>
+    <h3>1. 자료별 비밀번호 설정</h3>
+    <div id="lock-tbl"></div>
+    <div class="a-note">새 비밀번호 입력 후 <b>설정</b> — 즉시 그 비밀번호로 잠깁니다. <b>공개</b>를 누르면 누구나 볼 수 있게 됩니다. 설정한 비밀번호는 아래 보관함에 자동 기록됩니다.</div>
+    <div id="save-status"></div>
 
-      <a class="item" href="https://changminim.com/obesity-platform/obesity_MGTWR/storymap/slides.html">
-        <div class="row1">
-          <h3>영유아 비만의 지역사회 환경 결정요인 (MGTWR)</h3>
-          <span class="badge b-slide">슬라이드</span>
-          <span class="date">2026.07</span>
-        </div>
-        <p>MGTWR 단독 발표 — OLS→GWR→MGWR→GTWR→MGTWR 모형 비교, 변수별 작동 스케일, 로컬 계수 인터랙티브 지도, 코로나 전후 변화. 횡스크롤 14장.</p>
-        <span class="go">슬라이드 열기 →</span>
-      </a>
-
-      <a class="item" href="https://changminim.com/obesity-platform/obesity_MGTWR/storymap/region_slides.html">
-        <div class="row1">
-          <h3>1차 후보지역 30곳 × MGTWR 교차 검토</h3>
-          <span class="badge b-slide">슬라이드</span>
-          <span class="date">2026.07</span>
-        </div>
-        <p>EHSA 기반 후보지역 30곳에서 어떤 환경 요인이 작용하는지 검증 — 우선순위 그룹(A·A′·B·C) 지도와 요인별 개입 방향. 횡스크롤 9장.</p>
-        <span class="go">슬라이드 열기 →</span>
-      </a>
-
-      <a class="item" href="https://changminim.com/obesity-platform/obesity_MGTWR/storymap/index.html">
-        <div class="row1">
-          <h3>MGTWR 스토리맵 — 대중판</h3>
-          <span class="badge b-map">스토리맵</span>
-          <span class="date">2026.07</span>
-        </div>
-        <p>세로 스크롤로 읽는 연구 이야기 — 어려운 수식 없이 지도와 그래프 중심으로 풀어 쓴 버전. 인터랙티브 계수 지도 포함.</p>
-        <span class="go">스토리맵 열기 →</span>
-      </a>
-
-      <a class="item" href="https://changminim.com/obesity-platform/obesity_MGTWR/storymap/academic.html">
-        <div class="row1">
-          <h3>MGTWR 스토리맵 — 학술판</h3>
-          <span class="badge b-map">스토리맵</span>
-          <span class="date">2026.07</span>
-        </div>
-        <p>방법론·진단·참고문헌(DOI 링크)까지 갖춘 학술 버전 — 공간 자기상관 진단, OLS 기준모형, 변수별 bandwidth·τ·ENP 표.</p>
-        <span class="go">스토리맵 열기 →</span>
-      </a>
-
+    <h3>2. 마스터키 변경</h3>
+    <div class="a-row">
+      <input id="new-master" type="text" placeholder="새 마스터키" autocomplete="off">
+      <button class="a-btn" id="master-btn">변경</button>
     </div>
-  </details>
 
-  <!-- 추후 주제 추가: <details class="topic"> 블록을 복사해 붙이면 됨 -->
+    <h3>3. GitHub 연결 <span id="gh-status"></span></h3>
+    <div class="a-row">
+      <input id="gh-token" type="password" placeholder="GitHub Fine-grained 토큰 (이 브라우저에만 저장)" autocomplete="off">
+      <button class="a-btn" id="gh-save">저장</button>
+    </div>
+    <div class="a-note">
+      토큰 만들기: <code>github.com → Settings → Developer settings → Fine-grained tokens</code> →
+      Repository access를 <code>changminim.github.io</code> 하나로 제한 → Permissions에서 <code>Contents: Read and write</code>만 부여.
+      토큰은 이 브라우저의 localStorage에만 저장됩니다. 토큰이 없으면 변경 사항이 파일로 다운로드되며, GitHub에서 <code>presentation/locks.json</code>을 직접 교체하면 됩니다.
+    </div>
 
+    <h3>4. 비밀번호 보관함 (이 브라우저에만 저장)</h3>
+    <div id="vault-wrap"></div>
+    <div class="a-note">브라우저를 바꾸거나 초기화하면 사라지므로 아래 백업 버튼으로 파일을 받아두세요. PC의 <code>presentation/passwords-private.md</code> 파일에도 기록해 두면 안전합니다.</div>
+
+    <div class="a-foot">
+      <button class="a-mini" id="vault-dl">📄 보관함 백업 다운로드</button>
+      <button class="a-mini" id="logout">관리자 모드 해제</button>
+    </div>
+  </section>
 </main>
 
-<footer>© 2026 Changmin Im · <span class="mono">changminim.com/presentation</span></footer>
+<footer>© 2026 Changmin Im · <span class="mono">changminim.com/presentation</span><span id="key-link" title="관리자 로그인">🔑</span></footer>
+
+<!-- 비밀번호 입력 모달 -->
+<div id="overlay">
+  <div class="modal">
+    <div class="m-kicker">PROTECTED</div>
+    <h2 id="m-title">비밀번호가 필요합니다</h2>
+    <div class="m-name" id="m-name"></div>
+    <input type="password" id="m-input" placeholder="비밀번호 입력" autocomplete="off">
+    <div class="m-err" id="m-err">비밀번호가 일치하지 않습니다.</div>
+    <div class="m-btns">
+      <button class="m-cancel" id="m-cancel">취소</button>
+      <button class="m-ok" id="m-ok">열기</button>
+    </div>
+    <div class="m-hint" id="m-hint">마스터키를 입력하면 모든 자료가 열립니다.</div>
+  </div>
+</div>
+
+<script>
+/* ============================================================
+   ▼ 자료 관리 가이드
+   · 비밀번호는 이 파일이 아니라 locks.json에 있으며,
+     관리자 패널(사이트 하단 🔑 → 마스터키)에서 직접 설정/변경합니다.
+   · 새 발표 추가: ITEMS 배열에 객체 하나 추가.
+       cat  : CATEGORIES의 id (conference/lecture/special/project)
+       date : 'YYYY.MM' — 연도별 하위 그룹 자동 생성
+       type : 'slide' 또는 'map'
+       url  : 링크를 base64 인코딩한 값 (브라우저 콘솔에서 btoa('https://…'))
+     추가 직후엔 공개 상태 — 잠그려면 관리자 패널에서 비밀번호 설정.
+   · 새 섹션(주제) 추가: CATEGORIES에 추가.
+   ============================================================ */
+
+const SALT = 'changminim/pa/v1|';
+const REPO_API = 'https://api.github.com/repos/ChangminIm/changminim.github.io/contents/presentation/locks.json';
+
+const CATEGORIES = [
+  { id:'conference', name:'학회',          sub:'학술대회 · 학회 발표' },
+  { id:'lecture',    name:'강의',          sub:'정규 강의 자료' },
+  { id:'special',    name:'특강',          sub:'초청 강연 · 특강' },
+  { id:'project',    name:'연구과제 · 워크숍', sub:'「소아비만 지역별 건강격차 해소를 위한 중재프로그램 개발 및 실증연구」 등 과제 발표' },
+];
+
+const ITEMS = [
+  { id:'ws-2026-08', cat:'project', date:'2026.08', type:'slide',
+    title:'소아비만 시공간 분석에 기반한 중재 후보지역 검토',
+    desc:'제3차 정례 워크숍 발표 — 발생 핫스팟 분석(EHSA)과 1차 후보지역 30곳 · 지역환경 요인 분석(MGTWR) · 교차 검토 · 이동기록 앱 \'아이걸음\' 개발. 횡스크롤 35장.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9vYmVzaXR5LXBsYXRmb3JtL29iZXNpdHlfTUdUV1Ivc3RvcnltYXAvd29ya3Nob3AuaHRtbA==' },
+
+  { id:'mgtwr-2026-07', cat:'project', date:'2026.07', type:'slide',
+    title:'영유아 비만의 지역사회 환경 결정요인 (MGTWR)',
+    desc:'MGTWR 단독 발표 — OLS→GWR→MGWR→GTWR→MGTWR 모형 비교, 변수별 작동 스케일, 로컬 계수 인터랙티브 지도, 코로나 전후 변화. 횡스크롤 14장.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9vYmVzaXR5LXBsYXRmb3JtL29iZXNpdHlfTUdUV1Ivc3RvcnltYXAvc2xpZGVzLmh0bWw=' },
+
+  { id:'region30-2026-07', cat:'project', date:'2026.07', type:'slide',
+    title:'1차 후보지역 30곳 × MGTWR 교차 검토',
+    desc:'EHSA 기반 후보지역 30곳에서 어떤 환경 요인이 작용하는지 검증 — 우선순위 그룹(A·A′·B·C) 지도와 요인별 개입 방향. 횡스크롤 9장.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9vYmVzaXR5LXBsYXRmb3JtL29iZXNpdHlfTUdUV1Ivc3RvcnltYXAvcmVnaW9uX3NsaWRlcy5odG1s' },
+
+  { id:'story-pub-2026-07', cat:'project', date:'2026.07', type:'map',
+    title:'MGTWR 스토리맵 — 대중판',
+    desc:'세로 스크롤로 읽는 연구 이야기 — 어려운 수식 없이 지도와 그래프 중심으로 풀어 쓴 버전. 인터랙티브 계수 지도 포함.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9vYmVzaXR5LXBsYXRmb3JtL29iZXNpdHlfTUdUV1Ivc3RvcnltYXAvaW5kZXguaHRtbA==' },
+
+  { id:'story-aca-2026-07', cat:'project', date:'2026.07', type:'map',
+    title:'MGTWR 스토리맵 — 학술판',
+    desc:'방법론·진단·참고문헌(DOI 링크)까지 갖춘 학술 버전 — 공간 자기상관 진단, OLS 기준모형, 변수별 bandwidth·τ·ENP 표.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9vYmVzaXR5LXBsYXRmb3JtL29iZXNpdHlfTUdUV1Ivc3RvcnltYXAvYWNhZGVtaWMuaHRtbA==' },
+];
+
+/* ================= 이하 로직 (수정 불필요) ================= */
+
+const $ = s => document.querySelector(s);
+const LS_MASTER = 'pa_master_v1';
+const LS_VAULT  = 'pa_vault_v1';
+const LS_TOKEN  = 'pa_gh_token_v1';
+const SS_OK     = 'pa_ok_';
+
+let LOCKS = null;           // { master:'해시', items:{ id:'해시'|null } }
+let locksLoadFailed = false;
+
+async function sha256(text){
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(SALT + text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+const itemHash   = it => LOCKS && LOCKS.items ? (LOCKS.items[it.id] || null) : null;
+const isMaster   = () => !!LOCKS && localStorage.getItem(LS_MASTER) === LOCKS.master;
+const isUnlocked = it => !locksLoadFailed && (!itemHash(it) || isMaster() || sessionStorage.getItem(SS_OK + it.id) === '1');
+const decodeUrl  = b64 => decodeURIComponent(escape(atob(b64)));
+const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+
+async function loadLocks(){
+  try{
+    const res = await fetch('./locks.json?ts=' + Date.now(), { cache:'no-store' });
+    if (!res.ok) throw new Error(res.status);
+    LOCKS = await res.json();
+  }catch(e){
+    locksLoadFailed = true;
+    LOCKS = { master:'', items:{} };   // 로드 실패 시 전부 잠금(열 수 없음)으로 취급
+  }
+}
+
+/* ---------- 목록 렌더링 ---------- */
+function render(){
+  const list = $('#list');
+  list.innerHTML = '';
+  CATEGORIES.forEach((cat, ci) => {
+    const items = ITEMS.filter(it => it.cat === cat.id)
+                       .sort((a,b) => b.date.localeCompare(a.date));
+    const det = document.createElement('details');
+    det.className = 'topic';
+    if (items.length && ci === CATEGORIES.findIndex(c => ITEMS.some(i => i.cat === c.id))) det.open = true;
+    det.innerHTML = `
+      <summary>
+        <span class="t-arrow">▶</span>
+        <span>
+          <div class="t-title">${cat.name}</div>
+          <div class="t-sub">${cat.sub}</div>
+        </span>
+        <span class="t-count">${items.length}</span>
+      </summary>
+      <div class="t-body"></div>`;
+    const body = det.querySelector('.t-body');
+
+    if (!items.length){
+      body.innerHTML = '<div class="t-empty">아직 등록된 자료가 없습니다.</div>';
+    } else {
+      const years = [...new Set(items.map(it => it.date.slice(0,4)))].sort((a,b) => b - a);
+      years.forEach(y => {
+        const yi = items.filter(it => it.date.startsWith(y));
+        const yh = document.createElement('div');
+        yh.className = 'year-h';
+        yh.innerHTML = `<span class="y">${y}</span><span class="rule"></span><span class="n">${yi.length}건</span>`;
+        body.appendChild(yh);
+        yi.forEach(it => body.appendChild(renderItem(it)));
+      });
+    }
+    list.appendChild(det);
+  });
+  $('#master-badge').style.display = isMaster() ? 'inline-block' : 'none';
+  $('#admin').classList.toggle('show', isMaster());
+  if (isMaster()){ renderLockTable(); renderVault(); renderGhStatus(); }
+}
+
+function renderItem(it){
+  const el = document.createElement('button');
+  el.className = 'item';
+  const typeBadge = it.type === 'map'
+    ? '<span class="badge b-map">스토리맵</span>'
+    : '<span class="badge b-slide">슬라이드</span>';
+  const locked = itemHash(it) && !isUnlocked(it);
+  const lockBadge = itemHash(it) ? `<span class="badge b-lock">${locked ? '🔒 비밀번호' : '🔓 열림'}</span>` : '';
+  el.innerHTML = `
+    <div class="row1">
+      <h3>${esc(it.title)}</h3>
+      ${typeBadge}${lockBadge}
+      <span class="date">${it.date}</span>
+    </div>
+    <p>${esc(it.desc)}</p>
+    <span class="go">${it.type === 'map' ? '스토리맵' : '슬라이드'} 열기 →</span>`;
+  el.addEventListener('click', () => {
+    if (isUnlocked(it)) location.href = decodeUrl(it.url);
+    else openModal(it);
+  });
+  return el;
+}
+
+/* ---------- 비밀번호 모달 ---------- */
+let modalTarget = null;   // item 객체 또는 'master'
+
+function openModal(target){
+  modalTarget = target;
+  const master = target === 'master';
+  $('#m-title').textContent = master ? '관리자 로그인' : '비밀번호가 필요합니다';
+  $('#m-name').textContent  = master ? '마스터키를 입력하세요.' : target.title;
+  $('#m-hint').style.display = master ? 'none' : '';
+  $('#m-err').classList.remove('show');
+  $('#m-input').value = '';
+  $('#overlay').classList.add('show');
+  setTimeout(() => $('#m-input').focus(), 50);
+}
+function closeModal(){ $('#overlay').classList.remove('show'); modalTarget = null; }
+
+async function submitModal(){
+  const val = $('#m-input').value;
+  if (!val) return;
+  const hash = await sha256(val);
+  if (LOCKS.master && hash === LOCKS.master){
+    localStorage.setItem(LS_MASTER, hash);
+    const t = modalTarget;
+    closeModal(); render();
+    if (t && t !== 'master') location.href = decodeUrl(t.url);
+    return;
+  }
+  if (modalTarget !== 'master' && hash === itemHash(modalTarget)){
+    sessionStorage.setItem(SS_OK + modalTarget.id, '1');
+    const t = modalTarget;
+    closeModal(); render();
+    location.href = decodeUrl(t.url);
+    return;
+  }
+  $('#m-err').classList.add('show');
+  $('#m-input').select();
+}
+
+$('#m-ok').addEventListener('click', submitModal);
+$('#m-cancel').addEventListener('click', closeModal);
+$('#m-input').addEventListener('keydown', e => { if (e.key === 'Enter') submitModal(); });
+$('#overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeModal(); });
+$('#key-link').addEventListener('click', () => {
+  if (isMaster()) { $('#admin').scrollIntoView({behavior:'smooth'}); }
+  else openModal('master');
+});
+
+/* ---------- 관리자: locks.json 저장 (GitHub API) ---------- */
+function setStatus(ok, msg){
+  const el = $('#save-status');
+  el.className = ok ? 'ok' : 'err';
+  el.textContent = msg;
+}
+
+function downloadLocks(){
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(LOCKS, null, 2)], {type:'application/json'}));
+  a.download = 'locks.json';
+  a.click();
+}
+
+async function commitLocks(message){
+  const token = localStorage.getItem(LS_TOKEN);
+  if (!token){
+    downloadLocks();
+    setStatus(false, 'GitHub 토큰이 없어 locks.json 파일로 내려받았습니다. GitHub에서 presentation/locks.json을 이 파일로 교체하면 적용됩니다. (아래 3번에서 토큰을 저장하면 다음부터 자동 저장)');
+    return false;
+  }
+  try{
+    const headers = { 'Authorization':'Bearer ' + token, 'Accept':'application/vnd.github+json' };
+    const cur = await fetch(REPO_API, { headers, cache:'no-store' });
+    let sha;
+    if (cur.ok) sha = (await cur.json()).sha;
+    const body = {
+      message,
+      content: btoa(unescape(encodeURIComponent(JSON.stringify(LOCKS, null, 2) + '\n'))),
+    };
+    if (sha) body.sha = sha;
+    const res = await fetch(REPO_API, { method:'PUT', headers, body: JSON.stringify(body) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    setStatus(true, '저장 완료 — GitHub Pages 반영까지 1~2분 걸릴 수 있습니다.');
+    return true;
+  }catch(e){
+    downloadLocks();
+    setStatus(false, 'GitHub 저장 실패(' + e.message + ') — locks.json 파일로 내려받았으니 수동으로 교체해 주세요. 토큰 권한(Contents: Read and write)을 확인하세요.');
+    return false;
+  }
+}
+
+/* ---------- 관리자: 자료별 비밀번호 표 ---------- */
+function renderLockTable(){
+  const wrap = $('#lock-tbl');
+  const rows = ITEMS.map(it => {
+    const locked = !!itemHash(it);
+    return `<tr data-id="${it.id}">
+      <td>${esc(it.title)}</td>
+      <td>${locked ? '<span class="st-lock">🔒 잠김</span>' : '<span class="st-open">공개</span>'}</td>
+      <td><input type="text" placeholder="새 비밀번호" autocomplete="off"></td>
+      <td style="white-space:nowrap">
+        <button class="a-mini set">설정</button>
+        ${locked ? '<button class="a-mini open">공개</button>' : ''}
+      </td>
+    </tr>`;
+  }).join('');
+  wrap.innerHTML = `<table class="a-tbl">
+    <tr><th>자료</th><th>상태</th><th>새 비밀번호</th><th></th></tr>${rows}</table>`;
+
+  wrap.querySelectorAll('tr[data-id]').forEach(tr => {
+    const id = tr.dataset.id;
+    const it = ITEMS.find(i => i.id === id);
+    tr.querySelector('.set').addEventListener('click', async () => {
+      const pw = tr.querySelector('input').value.trim();
+      if (!pw){ tr.querySelector('input').focus(); return; }
+      LOCKS.items[id] = await sha256(pw);
+      vaultAdd(it.title, pw);
+      render();
+      await commitLocks('비밀번호 설정: ' + it.title);
+    });
+    const openBtn = tr.querySelector('.open');
+    if (openBtn) openBtn.addEventListener('click', async () => {
+      LOCKS.items[id] = null;
+      render();
+      await commitLocks('공개 전환: ' + it.title);
+    });
+  });
+}
+
+/* ---------- 관리자: 마스터키 변경 ---------- */
+$('#master-btn').addEventListener('click', async () => {
+  const pw = $('#new-master').value.trim();
+  if (!pw){ $('#new-master').focus(); return; }
+  if (!confirm('마스터키를 "' + pw + '"(으)로 변경할까요?\n변경 후에는 새 마스터키로만 관리자 로그인이 됩니다.')) return;
+  const hash = await sha256(pw);
+  LOCKS.master = hash;
+  localStorage.setItem(LS_MASTER, hash);   // 현재 브라우저는 로그인 유지
+  vaultAdd('★ 마스터키', pw);
+  $('#new-master').value = '';
+  render();
+  await commitLocks('마스터키 변경');
+});
+
+/* ---------- 관리자: GitHub 토큰 ---------- */
+function renderGhStatus(){
+  const has = !!localStorage.getItem(LS_TOKEN);
+  $('#gh-status').textContent = has ? '● 연결됨' : '○ 토큰 없음';
+  $('#gh-status').style.color = has ? 'var(--green)' : 'var(--muted)';
+}
+$('#gh-save').addEventListener('click', () => {
+  const t = $('#gh-token').value.trim();
+  if (t) localStorage.setItem(LS_TOKEN, t);
+  else localStorage.removeItem(LS_TOKEN);
+  $('#gh-token').value = '';
+  renderGhStatus();
+  setStatus(true, t ? 'GitHub 토큰 저장 완료 — 이제 비밀번호 변경이 자동 반영됩니다.' : '토큰을 삭제했습니다.');
+});
+
+/* ---------- 관리자: 비밀번호 보관함 ---------- */
+const vaultGet = () => JSON.parse(localStorage.getItem(LS_VAULT) || '[]');
+const vaultSet = v  => localStorage.setItem(LS_VAULT, JSON.stringify(v));
+
+function vaultAdd(label, pw){
+  const v = vaultGet();
+  v.unshift({ label, pw, date: new Date().toISOString().slice(0,10) });
+  vaultSet(v); renderVault();
+}
+function renderVault(){
+  const v = vaultGet();
+  const wrap = $('#vault-wrap');
+  if (!v.length){ wrap.innerHTML = '<div class="a-note">저장된 비밀번호가 없습니다. 위에서 설정하면 자동 기록됩니다.</div>'; return; }
+  wrap.innerHTML = `
+    <table class="a-tbl">
+      <tr><th>용도</th><th>비밀번호</th><th>설정일</th><th></th></tr>
+      ${v.map((e,i) => `<tr>
+        <td>${esc(e.label)}</td><td class="pw">${esc(e.pw)}</td><td class="mono">${e.date}</td>
+        <td><button class="del" data-i="${i}">삭제</button></td>
+      </tr>`).join('')}
+    </table>`;
+  wrap.querySelectorAll('.del').forEach(btn =>
+    btn.addEventListener('click', () => {
+      const v2 = vaultGet(); v2.splice(+btn.dataset.i, 1); vaultSet(v2); renderVault();
+    }));
+}
+$('#vault-dl').addEventListener('click', () => {
+  const v = vaultGet();
+  const txt = '발표자료 아카이브 — 비밀번호 보관함 백업 (' + new Date().toISOString().slice(0,10) + ')\n\n'
+    + v.map(e => `${e.date}  ${e.label}  →  ${e.pw}`).join('\n') + '\n';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([txt], {type:'text/plain'}));
+  a.download = 'presentation-passwords-backup.txt';
+  a.click();
+});
+$('#logout').addEventListener('click', () => {
+  localStorage.removeItem(LS_MASTER);
+  render();
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+/* ---------- 시작 ---------- */
+loadLocks().then(render);
+</script>
 
 </body>
 </html>
