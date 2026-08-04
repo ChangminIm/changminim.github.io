@@ -247,9 +247,9 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 4
        type : 'slide' 또는 'map'
        url  : 링크를 base64 인코딩한 값 (브라우저 콘솔에서 btoa('https://…'))
      추가 직후엔 공개 상태 — 잠그려면 관리자 패널에서 비밀번호 설정.
-   · 직접 URL 접근까지 막으려면 발표 페이지의 <head> 최상단에
-       <script src="/presentation/gate.js" data-item="자료ID"></script>
-     한 줄을 추가 (자료ID = ITEMS의 id).
+   · 직접 URL 접근까지 막으려면 발표 페이지의 head 최상단에
+       <script src="/presentation/gate.js" data-item="자료ID"><\/script>
+     한 줄을 추가 (자료ID = ITEMS의 id). (실제 넣을 땐 \/ 를 / 로)
    · 새 섹션(주제) 추가: CATEGORIES에 추가.
    ============================================================ */
 
