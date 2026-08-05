@@ -184,7 +184,7 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 4
   <!-- 관리자 패널: 마스터키 입력 시에만 표시 -->
   <section id="admin">
     <h2>🔑 관리자 도구</h2>
-    <div class="a-sub">마스터키로 로그인한 이 브라우저에서만 보입니다. 여기서 바꾼 비밀번호는 GitHub에 자동 저장되어 사이트 전체에 적용됩니다.</div>
+    <div class="a-sub">마스터키로 로그인한 이 브라우저에서만 보입니다. 여기서 바꾼 비밀번호는 Supabase에 저장되어 즉시 사이트 전체에 적용됩니다.</div>
 
     <h3>1. 자료별 비밀번호 설정</h3>
     <div id="lock-tbl"></div>
@@ -197,18 +197,11 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 4
       <button class="a-btn" id="master-btn">변경</button>
     </div>
 
-    <h3>3. GitHub 연결 <span id="gh-status"></span></h3>
-    <div class="a-row">
-      <input id="gh-token" type="password" placeholder="GitHub Fine-grained 토큰 (이 브라우저에만 저장)" autocomplete="off">
-      <button class="a-btn" id="gh-save">저장</button>
-    </div>
+    <h3>3. 백엔드 연결 <span id="gh-status"></span></h3>
     <div class="a-note">
-      토큰 만들기: <code>github.com → Settings → Developer settings → Fine-grained tokens</code> →
-      Repository access에서 <code>changminim.github.io</code>와 <code>presentation-passwords</code> 두 개 선택 →
-      Permissions에서 <code>Contents: Read and write</code>만 부여.
-      토큰은 이 브라우저의 localStorage에만 저장됩니다. 토큰이 있으면 ① 비밀번호 변경이 사이트에 자동 반영되고
-      ② 바꾼 비밀번호 원문이 비공개 저장소 <code>presentation-passwords/PASSWORDS.md</code>에 자동 기록됩니다.
-      토큰이 없으면 변경 사항이 파일로 다운로드되며, GitHub에서 <code>presentation/locks.json</code>을 직접 교체하면 됩니다.
+      비밀번호는 Supabase 데이터베이스에 저장되어 <b>변경 즉시</b> 사이트 전체에 적용됩니다.
+      토큰·배포 대기 없이 어느 기기에서든 마스터키만으로 관리할 수 있습니다.
+      Supabase 장애 시에는 저장소의 <code>presentation/locks.json</code>이 폴백으로 사용됩니다.
     </div>
 
     <h3>4. 비밀번호 보관함 (이 브라우저에만 저장)</h3>
@@ -243,7 +236,7 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 4
 <script>
 /* ============================================================
    ▼ 자료 관리 가이드
-   · 비밀번호는 이 파일이 아니라 locks.json에 있으며,
+   · 비밀번호는 이 파일이 아니라 Supabase(폴백: locks.json)에 있으며,
      관리자 패널(사이트 하단 🔑 → 마스터키)에서 직접 설정/변경합니다.
    · 새 발표 추가: ITEMS 배열에 객체 하나 추가.
        cat  : CATEGORIES의 id (conference/lecture/special/project)
@@ -258,9 +251,10 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 4
    ============================================================ */
 
 const SALT = 'changminim/pa/v1|';
-const REPO_API = 'https://api.github.com/repos/ChangminIm/changminim.github.io/contents/presentation/locks.json';
-/* 비밀번호 원문 자동 기록처 — 비공개 저장소 (본인 GitHub 계정만 열람 가능) */
-const PWLOG_API = 'https://api.github.com/repos/ChangminIm/presentation-passwords/contents/PASSWORDS.md';
+/* Supabase 백엔드 — anon 키는 공개용 (RLS: 읽기 전용, 쓰기는 마스터키 검증 RPC로만) */
+const SB_URL  = 'https://txkljxytuzlhutdzkbby.supabase.co';
+const SB_ANON = 'sb_publishable_FUiBO4ivXKcM8c-uxME96A_SHc3cZpW';
+const SB_HEADERS = { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON, 'Content-Type': 'application/json' };
 
 const CATEGORIES = [
   { id:'conference', name:'학회',          sub:'학술대회 · 학회 발표' },
@@ -316,7 +310,6 @@ const ITEMS = [
 const $ = s => document.querySelector(s);
 const LS_MASTER = 'pa_master_v1';
 const LS_VAULT  = 'pa_vault_v1';
-const LS_TOKEN  = 'pa_gh_token_v1';
 
 let LOCKS = null;           // { master:'해시', items:{ id:'해시'|null } }
 let locksLoadFailed = false;
@@ -333,6 +326,18 @@ const decodeUrl  = b64 => decodeURIComponent(escape(atob(b64)));
 const esc = s => s.replace(/&/g,'&amp;').replace(/</g,'&lt;');
 
 async function loadLocks(){
+  /* 1순위: Supabase(실시간) → 실패 시 locks.json(저장소 폴백) → 둘 다 실패 시 전부 잠금 */
+  if (SB_URL.startsWith('http')){
+    try{
+      const res = await fetch(SB_URL + '/rest/v1/presentation_locks?id=eq.main&select=data',
+        { headers: SB_HEADERS, cache:'no-store' });
+      if (!res.ok) throw new Error(res.status);
+      const rows = await res.json();
+      if (!rows.length || !rows[0].data) throw new Error('empty');
+      LOCKS = rows[0].data;
+      return;
+    }catch(e){ /* 폴백으로 진행 */ }
+  }
   try{
     const res = await fetch('./locks.json?ts=' + Date.now(), { cache:'no-store' });
     if (!res.ok) throw new Error(res.status);
@@ -468,58 +473,28 @@ function downloadLocks(){
   a.click();
 }
 
-async function commitLocks(message){
-  const token = localStorage.getItem(LS_TOKEN);
-  if (!token){
+/* Supabase RPC — 현재 마스터키 해시(authMaster)가 서버 저장값과 일치해야만 갱신됨 */
+async function saveLocks(authMaster){
+  if (!SB_URL.startsWith('http')){
     downloadLocks();
-    setStatus(false, 'GitHub 토큰이 없어 locks.json 파일로 내려받았습니다. GitHub에서 presentation/locks.json을 이 파일로 교체하면 적용됩니다. (아래 3번에서 토큰을 저장하면 다음부터 자동 저장)');
+    setStatus(false, 'Supabase가 아직 연결되지 않아 locks.json 파일로 내려받았습니다. GitHub에서 presentation/locks.json을 이 파일로 교체하면 적용됩니다.');
     return false;
   }
   try{
-    const headers = { 'Authorization':'Bearer ' + token, 'Accept':'application/vnd.github+json' };
-    const cur = await fetch(REPO_API, { headers, cache:'no-store' });
-    let sha;
-    if (cur.ok) sha = (await cur.json()).sha;
-    const body = {
-      message,
-      content: btoa(unescape(encodeURIComponent(JSON.stringify(LOCKS, null, 2) + '\n'))),
-    };
-    if (sha) body.sha = sha;
-    const res = await fetch(REPO_API, { method:'PUT', headers, body: JSON.stringify(body) });
+    const res = await fetch(SB_URL + '/rest/v1/rpc/update_locks', {
+      method:'POST', headers: SB_HEADERS,
+      body: JSON.stringify({ new_data: LOCKS, auth_master: authMaster }),
+    });
     if (!res.ok) throw new Error('HTTP ' + res.status);
-    setStatus(true, '저장 완료 — GitHub Pages 반영까지 1~2분 걸릴 수 있습니다.');
+    const ok = await res.json();
+    if (ok !== true) throw new Error('인증 거부');
+    setStatus(true, '저장 완료 — 사이트 전체에 즉시 적용되었습니다.');
     return true;
   }catch(e){
     downloadLocks();
-    setStatus(false, 'GitHub 저장 실패(' + e.message + ') — locks.json 파일로 내려받았으니 수동으로 교체해 주세요. 토큰 권한(Contents: Read and write)을 확인하세요.');
+    setStatus(false, '저장 실패(' + e.message + ') — locks.json 파일로 내려받았으니 GitHub에서 presentation/locks.json을 교체해 주세요.');
     return false;
   }
-}
-
-/* ---------- 관리자: 비밀번호 원문 자동 백업 (비공개 저장소) ---------- */
-async function logPassword(label, pw){
-  const token = localStorage.getItem(LS_TOKEN);
-  if (!token) return false;
-  try{
-    const headers = { 'Authorization':'Bearer ' + token, 'Accept':'application/vnd.github+json' };
-    const cur = await fetch(PWLOG_API, { headers, cache:'no-store' });
-    let sha, text = '# 발표자료 아카이브 — 비밀번호 기록\n\n## 변경 기록\n';
-    if (cur.ok){
-      const j = await cur.json();
-      sha = j.sha;
-      text = decodeURIComponent(escape(atob(j.content.replace(/\n/g,''))));
-    }
-    const now = new Date();
-    const stamp = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' +
-      String(now.getDate()).padStart(2,'0') + ' ' + String(now.getHours()).padStart(2,'0') + ':' +
-      String(now.getMinutes()).padStart(2,'0');
-    text += '\n- ' + stamp + ' · ' + label + ' → `' + pw + '`';
-    const body = { message: '비밀번호 기록: ' + label,
-      content: btoa(unescape(encodeURIComponent(text + '\n'))) };
-    if (sha) body.sha = sha;
-    const res = await fetch(PWLOG_API, { method:'PUT', headers, body: JSON.stringify(body) });
-    return res.ok;
-  }catch(e){ return false; }
 }
 
 /* ---------- 관리자: 자료별 비밀번호 표 ---------- */
@@ -549,17 +524,13 @@ function renderLockTable(){
       LOCKS.items[id] = await sha256(pw);
       vaultAdd(it.title, pw);
       render();
-      const saved = await commitLocks('비밀번호 설정: ' + it.title);
-      const logged = await logPassword(it.title, pw);
-      if (saved) setStatus(true, logged
-        ? '저장 완료 — 사이트 반영 1~2분. 비밀번호가 비공개 기록소(PASSWORDS.md)에도 자동 백업되었습니다.'
-        : '저장 완료 — 사이트 반영 1~2분. 단, 비공개 기록소 백업은 실패했습니다 (토큰에 presentation-passwords 권한이 있는지 확인).');
+      await saveLocks(LOCKS.master);
     });
     const openBtn = tr.querySelector('.open');
     if (openBtn) openBtn.addEventListener('click', async () => {
       LOCKS.items[id] = null;
       render();
-      await commitLocks('공개 전환: ' + it.title);
+      await saveLocks(LOCKS.master);
     });
   });
 }
@@ -569,33 +540,23 @@ $('#master-btn').addEventListener('click', async () => {
   const pw = $('#new-master').value.trim();
   if (!pw){ $('#new-master').focus(); return; }
   if (!confirm('마스터키를 "' + pw + '"(으)로 변경할까요?\n변경 후에는 새 마스터키로만 관리자 로그인이 됩니다.')) return;
+  const oldMaster = LOCKS.master;          // 서버 인증에는 기존 마스터 해시가 필요
   const hash = await sha256(pw);
   LOCKS.master = hash;
   localStorage.setItem(LS_MASTER, hash);   // 현재 브라우저는 로그인 유지
   vaultAdd('★ 마스터키', pw);
   $('#new-master').value = '';
   render();
-  const saved = await commitLocks('마스터키 변경');
-  const logged = await logPassword('★ 마스터키', pw);
-  if (saved) setStatus(true, logged
-    ? '마스터키 변경 완료 — 비공개 기록소에도 자동 백업되었습니다.'
-    : '마스터키 변경 완료 — 단, 비공개 기록소 백업은 실패했습니다. 새 마스터키를 꼭 따로 적어두세요!');
+  const saved = await saveLocks(oldMaster);
+  if (saved) setStatus(true, '마스터키 변경 완료 — 즉시 적용되었습니다. 새 마스터키를 꼭 따로 적어두세요!');
 });
 
-/* ---------- 관리자: GitHub 토큰 ---------- */
+/* ---------- 관리자: 백엔드 연결 상태 ---------- */
 function renderGhStatus(){
-  const has = !!localStorage.getItem(LS_TOKEN);
-  $('#gh-status').textContent = has ? '● 연결됨' : '○ 토큰 없음';
+  const has = SB_URL.startsWith('http');
+  $('#gh-status').textContent = has ? '● Supabase 연결됨' : '○ 미연결 (파일 다운로드 모드)';
   $('#gh-status').style.color = has ? 'var(--green)' : 'var(--muted)';
 }
-$('#gh-save').addEventListener('click', () => {
-  const t = $('#gh-token').value.trim();
-  if (t) localStorage.setItem(LS_TOKEN, t);
-  else localStorage.removeItem(LS_TOKEN);
-  $('#gh-token').value = '';
-  renderGhStatus();
-  setStatus(true, t ? 'GitHub 토큰 저장 완료 — 이제 비밀번호 변경이 자동 반영됩니다.' : '토큰을 삭제했습니다.');
-});
 
 /* ---------- 관리자: 비밀번호 보관함 ---------- */
 const vaultGet = () => JSON.parse(localStorage.getItem(LS_VAULT) || '[]');

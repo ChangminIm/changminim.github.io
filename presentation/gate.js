@@ -10,6 +10,10 @@
   var LS_MASTER = 'pa_master_v1';
   var SS_TICKET = 'pa_ticket_' + ITEM;   // 아카이브에서 방금 인증한 1회용 티켓 (사용 즉시 소멸)
 
+  /* Supabase 백엔드 — anon 키는 공개용 (RLS로 읽기 전용) */
+  var SB_URL  = 'https://txkljxytuzlhutdzkbby.supabase.co';
+  var SB_ANON = 'sb_publishable_FUiBO4ivXKcM8c-uxME96A_SHc3cZpW';
+
   /* 검증 전까지 페이지 숨김 */
   var hide = document.createElement('style');
   hide.id = 'pa-gate-hide';
@@ -97,8 +101,26 @@
     });
   }
 
-  fetch('/presentation/locks.json?ts=' + Date.now(), { cache: 'no-store' })
-    .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+  /* 1순위: Supabase(실시간 반영) → 실패 시 locks.json(저장소 폴백) */
+  function fetchLocks() {
+    var fromFile = function () {
+      return fetch('/presentation/locks.json?ts=' + Date.now(), { cache: 'no-store' })
+        .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); });
+    };
+    if (SB_URL.indexOf('http') !== 0) return fromFile();   // 미설정 시 파일만 사용
+    return fetch(SB_URL + '/rest/v1/presentation_locks?id=eq.main&select=data', {
+        headers: { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON },
+        cache: 'no-store'
+      })
+      .then(function (res) { if (!res.ok) throw new Error(res.status); return res.json(); })
+      .then(function (rows) {
+        if (!rows.length || !rows[0].data) throw new Error('empty');
+        return rows[0].data;
+      })
+      .catch(fromFile);
+  }
+
+  fetchLocks()
     .then(function (locks) {
       var itemHash = (locks.items && locks.items[ITEM]) || null;
       if (!itemHash) { reveal(); return; }                                  // 공개 자료
