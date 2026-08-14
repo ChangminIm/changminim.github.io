@@ -396,8 +396,7 @@
     if (GATE) { enterSite(); return; }
     if (!tl) return;
     try { localStorage.setItem('knuIntroSeen', '1'); } catch (e) {}
-    const st = tl.scrollTrigger;
-    window.scrollTo({ top: st.end + 10, behavior: 'smooth' });
+    window.scrollTo({ top: contentStart(), behavior: 'smooth' });
   });
 
   /* nav chrome switch (variant B: light-chrome body class) */
@@ -448,11 +447,16 @@
     });
   }
 
-  /* ---------- 재방문 시 인트로 자동 스킵 ---------- */
+  /* ---------- 재방문 시 인트로 자동 스킵 (소식 섹션에서 시작) ---------- */
+  function contentStart() {
+    const news = document.querySelector('#news');
+    if (!news) return tl ? tl.scrollTrigger.end + 10 : 0;
+    return news.getBoundingClientRect().top + window.scrollY - 70;
+  }
   try {
     if (tl && !location.hash && localStorage.getItem('knuIntroSeen') === '1') {
       window.addEventListener('load', () => {
-        requestAnimationFrame(() => window.scrollTo(0, tl.scrollTrigger.end + 10));
+        requestAnimationFrame(() => window.scrollTo(0, contentStart()));
       });
     }
   } catch (e) { /* localStorage 차단 환경 무시 */ }
