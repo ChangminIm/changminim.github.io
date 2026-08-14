@@ -34,12 +34,12 @@ body.light-chrome header.nav.scrolled .nav-links a:hover{color:#0A4DB5}
 
 /* 좌표 HUD — 기존 사이트 푸터 모티프 */
 .coord-hud{position:absolute;left:6vw;bottom:26px;z-index:6;
-  font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;
+  font-family:"IBM Plex Mono",'NanumSquare',monospace;font-size:.72rem;letter-spacing:.12em;
   color:#8FA3C4;opacity:.85}
 
 /* skip intro */
 .skip{position:absolute;right:5vw;bottom:26px;z-index:8;cursor:pointer;
-  font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  font-family:"IBM Plex Mono",'NanumSquare',monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
   color:#C7D2E4;background:rgba(10,16,28,.5);border:1px solid rgba(150,170,210,.25);
   border-radius:999px;padding:9px 18px;backdrop-filter:blur(8px);transition:.2s}
 .skip:hover{color:#FFB86B;border-color:#FFB86B}
@@ -67,7 +67,7 @@ body.light-chrome header.nav.scrolled .nav-links a:hover{color:#0A4DB5}
   background:none;border:none;cursor:pointer;padding:2px}
 .dot i{width:9px;height:9px;border-radius:50%;background:rgba(200,214,236,.35);
   border:1px solid rgba(200,214,236,.5);transition:.25s;display:block}
-.dot span{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.1em;
+.dot span{font-family:"IBM Plex Mono",'NanumSquare',monospace;font-size:.68rem;letter-spacing:.1em;
   color:#C7D2E4;opacity:0;transition:.25s;white-space:nowrap}
 .dot:hover span{opacity:.9}
 .dot.on i{background:var(--accent,#FFB86B);border-color:var(--accent,#FFB86B);
@@ -77,14 +77,14 @@ body.light-chrome header.nav.scrolled .nav-links a:hover{color:#0A4DB5}
 /* 동해·황해 직접 라벨 */
 .sea-label{text-align:center;color:#9FB4D8;opacity:0;transition:opacity .8s;pointer-events:none}
 .sea-on .sea-label{opacity:.85}
-.sea-label span{display:block;font-family:"IBM Plex Mono",monospace;font-size:.95rem;
+.sea-label span{display:block;font-family:"IBM Plex Mono",'NanumSquare',monospace;font-size:.95rem;
   letter-spacing:.55em;text-indent:.55em}
-.sea-label small{display:block;font-family:"IBM Plex Mono",monospace;font-size:.6rem;
+.sea-label small{display:block;font-family:"IBM Plex Mono",'NanumSquare',monospace;font-size:.6rem;
   letter-spacing:.3em;text-indent:.3em;opacity:.6;margin-top:4px}
 
 /* 씬 번호 — 본문 섹션 넘버링과 연속 */
 .scene-no{position:absolute;right:6vw;bottom:70px;z-index:6;text-align:right;
-  font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.16em;
+  font-family:"IBM Plex Mono",'NanumSquare',monospace;font-size:.66rem;letter-spacing:.16em;
   color:#8FA3C4;opacity:0;visibility:hidden}
 
 /* 히어로 마지막 → 본문 핸드오프 브릿지 */
@@ -140,7 +140,7 @@ body[data-mode="gate"].entered .hero{height:88vh}
 body[data-mode="gate"].entered header.nav{display:flex}
 .enter-btn{position:absolute;left:50%;bottom:7vh;transform:translateX(-50%);z-index:9;
   opacity:0;visibility:hidden;cursor:pointer;
-  font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;
+  font-family:"IBM Plex Mono",'NanumSquare',monospace;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;
   color:#0A0F1A;background:#FFB86B;border:none;border-radius:999px;padding:16px 34px;
   box-shadow:0 8px 40px rgba(255,184,107,.35);transition:transform .2s,box-shadow .2s}
 .enter-btn:hover{transform:translateX(-50%) translateY(-2px);box-shadow:0 12px 50px rgba(255,184,107,.5)}
