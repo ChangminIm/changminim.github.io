@@ -74,7 +74,6 @@
       paint: { 'raster-opacity': 1, 'raster-fade-duration': 0 } }, firstSymbol);
 
     map.addSource('sma', { type: 'geojson', data: D.geo, promoteId: 'cd' });
-    map.addSource('sma-out', { type: 'geojson', data: D.outline });
 
     map.addLayer({ id: 'chor', type: 'fill', source: 'sma', paint: {
       'fill-color': ['interpolate', ['linear'],
@@ -87,7 +86,7 @@
       'line-color': tv('--map-outline'), 'line-width': 0.7, 'line-opacity': 0
     } }, firstSymbol);
 
-    map.addLayer({ id: 'out-line', type: 'line', source: 'sma-out', paint: {
+    map.addLayer({ id: 'out-line', type: 'line', source: 'sma', paint: {
       'line-color': tv('--map-outline'), 'line-width': 1.4, 'line-opacity': 0
     } }, firstSymbol);
 

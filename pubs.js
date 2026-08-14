@@ -33,7 +33,8 @@ window.LAB_PUBS = [
   groups.forEach(g => {
     const items = window.LAB_PUBS.filter(p => g.test(p.y));
     if (!items.length) return;
-    html += `<div class="pub-group">${g.label}</div>`;
+    html += `<button class="pub-group" type="button" aria-expanded="true">${g.label}<span class="cnt">${items.length}</span><span class="chev">⌄</span></button>`;
+    html += `<div class="pub-items">`;
     items.forEach(p => {
       const jj = p.review
         ? `Under review · <i>${esc(p.j)}</i>`
@@ -44,6 +45,19 @@ window.LAB_PUBS = [
         <div class="t">${authors(p.a)} ${esc(p.t)}</div>
         <div class="j">${jj}${doi}</div></div></div>`;
     });
+    html += `</div>`;
   });
   box.innerHTML = html;
+
+  /* 그룹 접기 - 모바일에서는 첫 그룹만 펼친 상태로 시작 */
+  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  box.querySelectorAll('.pub-group').forEach((head, i) => {
+    const body = head.nextElementSibling;
+    const set = open => {
+      head.setAttribute('aria-expanded', open);
+      body.classList.toggle('collapsed', !open);
+    };
+    if (isMobile && i > 0) set(false);
+    head.addEventListener('click', () => set(head.getAttribute('aria-expanded') !== 'true'));
+  });
 })();
