@@ -277,9 +277,13 @@
     { p: 0.95, label: '결론' },
   ];
 
-  let curP = 0;
+  let curP = 0, seenMarked = false;
   function drive(p) {
     curP = p;
+    if (p > 0.9 && !seenMarked) {
+      seenMarked = true;
+      try { localStorage.setItem('knuIntroSeen', '1'); } catch (e) {}
+    }
     if (!mapReady) return;
     map.jumpTo(camAt(p));
     map.setPaintProperty('bm', 'raster-opacity', 1 - 0.78 * range(p, 0.30, 0.44));
@@ -391,6 +395,7 @@
   document.querySelector('.skip').addEventListener('click', () => {
     if (GATE) { enterSite(); return; }
     if (!tl) return;
+    try { localStorage.setItem('knuIntroSeen', '1'); } catch (e) {}
     const st = tl.scrollTrigger;
     window.scrollTo({ top: st.end + 10, behavior: 'smooth' });
   });
@@ -402,4 +407,34 @@
     onEnter: () => nav.classList.add('scrolled'),
     onLeaveBack: () => nav.classList.remove('scrolled')
   });
+
+  /* ---------- news carousel ---------- */
+  const track = document.querySelector('.car-track');
+  if (track) {
+    const step = () => Math.min(track.clientWidth * 0.9, 520);
+    const prevB = document.querySelector('.car-btn.prev');
+    const nextB = document.querySelector('.car-btn.next');
+    const sync = () => {
+      prevB.disabled = track.scrollLeft <= 4;
+      nextB.disabled = track.scrollLeft >= track.scrollWidth - track.clientWidth - 4;
+    };
+    prevB.addEventListener('click', () => track.scrollBy({ left: -step(), behavior: 'smooth' }));
+    nextB.addEventListener('click', () => track.scrollBy({ left: step(), behavior: 'smooth' }));
+    track.addEventListener('scroll', sync);
+    window.addEventListener('resize', sync);
+    sync();
+    if (!REDUCED) gsap.from('.news-card', {
+      y: 26, autoAlpha: 0, duration: 0.7, stagger: 0.12, ease: 'power2.out',
+      scrollTrigger: { trigger: '.carousel', start: 'top 82%', once: true }
+    });
+  }
+
+  /* ---------- 재방문 시 인트로 자동 스킵 ---------- */
+  try {
+    if (tl && !location.hash && localStorage.getItem('knuIntroSeen') === '1') {
+      window.addEventListener('load', () => {
+        requestAnimationFrame(() => window.scrollTo(0, tl.scrollTrigger.end + 10));
+      });
+    }
+  } catch (e) { /* localStorage 차단 환경 무시 */ }
 })();
