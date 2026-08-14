@@ -1,0 +1,129 @@
+/* ==== v2: MapLibre hero + continuity system ==== */
+
+/* ---------- fixed nav (기존 사이트 문법 이식) ---------- */
+header.nav{position:fixed;top:0;left:0;right:0;z-index:60;height:62px;
+  display:flex;align-items:center;transition:background .35s,border-color .35s;
+  background:rgba(4,8,16,.55);backdrop-filter:blur(10px);border-bottom:1px solid rgba(150,170,210,.14)}
+header.nav .nav-inner{max-width:1180px;margin:0 auto;padding:0 28px;width:100%;
+  display:flex;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:11px;font-weight:750;font-size:1.02rem;letter-spacing:.01em;color:#EFF3FA;text-decoration:none}
+.brand img{width:36px;height:36px;display:block}
+.brand small{font-weight:400;opacity:.55;margin-left:8px;font-size:.76rem}
+.nav-links{display:flex;gap:26px}
+.nav-links a{font-family:"IBM Plex Mono",monospace;font-size:.75rem;letter-spacing:.09em;
+  text-transform:uppercase;color:#C7D2E4;text-decoration:none;transition:color .2s}
+.nav-links a i{font-style:normal;opacity:.5;margin-left:4px}
+.nav-links a:hover{color:#FFB86B}
+/* 본문 진입 후 라이트 크롬 (variant B) */
+body.light-chrome header.nav.scrolled{background:rgba(245,247,251,.85);border-color:#DCE3F0}
+body.light-chrome header.nav.scrolled .brand{color:#101B2E}
+body.light-chrome header.nav.scrolled .nav-links a{color:#3A4759}
+body.light-chrome header.nav.scrolled .nav-links a:hover{color:#0A4DB5}
+
+/* ---------- map stage ---------- */
+.hero{position:relative;height:100vh;overflow:hidden;background:#02050B}
+#map{position:absolute;inset:0}
+#map canvas{outline:none}
+.map-dim{position:absolute;inset:0;background:#02050B;opacity:0;pointer-events:none;z-index:3}
+.hero .vignette{position:absolute;inset:0;pointer-events:none;z-index:2;
+  background:radial-gradient(115% 85% at 50% 42%,transparent 55%,rgba(0,2,8,.62) 100%)}
+.grain{position:absolute;inset:0;pointer-events:none;z-index:2;opacity:.5;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E")}
+
+/* 좌표 HUD — 기존 사이트 푸터 모티프 */
+.coord-hud{position:absolute;left:6vw;bottom:26px;z-index:6;
+  font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.12em;
+  color:#8FA3C4;opacity:.85}
+
+/* skip intro */
+.skip{position:absolute;right:5vw;bottom:26px;z-index:8;cursor:pointer;
+  font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.14em;text-transform:uppercase;
+  color:#C7D2E4;background:rgba(10,16,28,.5);border:1px solid rgba(150,170,210,.25);
+  border-radius:999px;padding:9px 18px;backdrop-filter:blur(8px);transition:.2s}
+.skip:hover{color:#FFB86B;border-color:#FFB86B}
+
+/* hotspot markers (HTML marker) */
+.hs{position:relative;width:26px;height:26px;cursor:pointer;opacity:0;transition:opacity .6s}
+.pulses-on .hs{opacity:1}
+.hs .dot{position:absolute;left:50%;top:50%;width:13px;height:13px;border-radius:50%;
+  transform:translate(-50%,-50%);background:var(--accent-strong,#FF6B4A);
+  border:2px solid rgba(255,255,255,.85);
+  box-shadow:0 0 18px 5px rgba(255,107,74,.8)}
+.hs .ring{position:absolute;left:50%;top:50%;width:26px;height:26px;border-radius:50%;
+  transform:translate(-50%,-50%);border:2.5px solid var(--accent-strong,#FF6B4A);
+  animation:hsp 2s infinite ease-out}
+.hs .ring.r2{animation-delay:1s}
+@keyframes hsp{0%{transform:translate(-50%,-50%) scale(1);opacity:1}
+  100%{transform:translate(-50%,-50%) scale(4.2);opacity:0}}
+
+/* 씬 도트 내비게이션 */
+.dots{position:absolute;right:22px;top:50%;transform:translateY(-50%);z-index:9;
+  display:flex;flex-direction:column;gap:14px}
+.dot{position:relative;display:flex;align-items:center;justify-content:flex-end;gap:10px;
+  background:none;border:none;cursor:pointer;padding:2px}
+.dot i{width:9px;height:9px;border-radius:50%;background:rgba(200,214,236,.35);
+  border:1px solid rgba(200,214,236,.5);transition:.25s;display:block}
+.dot span{font-family:"IBM Plex Mono",monospace;font-size:.68rem;letter-spacing:.1em;
+  color:#C7D2E4;opacity:0;transition:.25s;white-space:nowrap}
+.dot:hover span{opacity:.9}
+.dot.on i{background:var(--accent,#FFB86B);border-color:var(--accent,#FFB86B);
+  box-shadow:0 0 10px rgba(255,184,107,.6);transform:scale(1.25)}
+.dot.on span{opacity:.9;color:var(--accent,#FFB86B)}
+
+/* 동해·황해 직접 라벨 */
+.sea-label{text-align:center;color:#9FB4D8;opacity:0;transition:opacity .8s;pointer-events:none}
+.sea-on .sea-label{opacity:.85}
+.sea-label span{display:block;font-family:"IBM Plex Mono",monospace;font-size:.95rem;
+  letter-spacing:.55em;text-indent:.55em}
+.sea-label small{display:block;font-family:"IBM Plex Mono",monospace;font-size:.6rem;
+  letter-spacing:.3em;text-indent:.3em;opacity:.6;margin-top:4px}
+
+/* 씬 번호 — 본문 섹션 넘버링과 연속 */
+.scene-no{position:absolute;right:6vw;bottom:70px;z-index:6;text-align:right;
+  font-family:"IBM Plex Mono",monospace;font-size:.66rem;letter-spacing:.16em;
+  color:#8FA3C4;opacity:0;visibility:hidden}
+
+/* 히어로 마지막 → 본문 핸드오프 브릿지 */
+.bridge{padding:96px 0 8px;text-align:center}
+.bridge .mono{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);opacity:.9}
+.bridge p{margin-top:10px;font-size:1.05rem;opacity:.7}
+
+section.block{scroll-margin-top:70px}
+
+/* ---------- mobile ---------- */
+@media (max-width:720px){
+  .nav-links{gap:13px}
+  .nav-links a{font-size:.66rem}
+  .nav-links a i{display:none}
+  .brand small{display:none}
+  .coord-hud{display:none}
+  .skip{right:4vw;bottom:20px;padding:8px 14px;font-size:.6rem}
+  .year-hud{top:9vh;right:5vw}
+  .year-hud .y{font-size:2.8rem}
+  .year-hud .l{font-size:.62rem}
+  .legend .bar{width:130px;height:8px}
+  .dots{right:8px;gap:10px}
+  .dot span{display:none}
+  .dot i{width:8px;height:8px}
+  .caption{max-width:84vw}
+  .caption p{font-size:1.1rem}
+  .caption .en{font-size:.84rem}
+  .hero-title h1{font-size:2.2rem}
+  .imp-wrap{padding:22px 20px}
+  .imp-row{grid-template-columns:104px 1fr 48px}
+  .imp-row .n{font-size:.78rem}
+  .imp-wrap h3{font-size:1.4rem}
+}
+
+/* ---------- intro-gate mode ---------- */
+body[data-mode="gate"]:not(.entered) .site{display:none}
+body[data-mode="gate"]:not(.entered) header.nav{display:none}
+body[data-mode="gate"].entered .hero{height:88vh}
+body[data-mode="gate"].entered header.nav{display:flex}
+.enter-btn{position:absolute;left:50%;bottom:7vh;transform:translateX(-50%);z-index:9;
+  opacity:0;visibility:hidden;cursor:pointer;
+  font-family:"IBM Plex Mono",monospace;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;
+  color:#0A0F1A;background:#FFB86B;border:none;border-radius:999px;padding:16px 34px;
+  box-shadow:0 8px 40px rgba(255,184,107,.35);transition:transform .2s,box-shadow .2s}
+.enter-btn:hover{transform:translateX(-50%) translateY(-2px);box-shadow:0 12px 50px rgba(255,184,107,.5)}
+body.entered .skip{display:none}
