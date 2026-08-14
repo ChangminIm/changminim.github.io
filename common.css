@@ -119,6 +119,15 @@ section.block{padding:110px 0}
 .chip{font-family:"IBM Plex Mono",monospace;font-size:.72rem;letter-spacing:.04em;
   border:1px solid var(--card-line);border-radius:999px;padding:5px 12px;opacity:.8}
 
+/* news */
+.news-card{padding:0;overflow:hidden}
+.news-card img{width:100%;height:250px;object-fit:cover;display:block}
+.news-card .nbody{padding:24px 28px}
+.news-card .date{font-family:"IBM Plex Mono",monospace;font-size:.76rem;letter-spacing:.1em;
+  color:var(--accent);margin-bottom:8px}
+.news-card h4{font-size:1.08rem;line-height:1.5;margin-bottom:8px}
+.news-card p{font-size:.9rem;line-height:1.6;opacity:.7}
+
 /* about: 텍스트 + 대형 프로필 */
 .about-grid{display:grid;grid-template-columns:1.05fr .75fr;gap:64px;align-items:start;margin-top:8px}
 .portrait{position:sticky;top:96px}
