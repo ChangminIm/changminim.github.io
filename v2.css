@@ -134,6 +134,26 @@ section.block{scroll-margin-top:70px}
   .imp-wrap h3{font-size:1.4rem}
 }
 
+/* ---------- 모바일 플로팅 섹션 메뉴 (리모콘) ---------- */
+.fab{display:none}
+@media (max-width:720px){
+  .fab{display:block;position:fixed;right:16px;bottom:20px;z-index:75;
+    opacity:0;pointer-events:none;transition:opacity .3s}
+  .fab.show{opacity:1;pointer-events:auto}
+  .fab-btn{width:52px;height:52px;border-radius:50%;border:0;cursor:pointer;
+    background:#043786;color:#fff;font-size:1.15rem;line-height:1;
+    box-shadow:0 8px 26px rgba(4,55,134,.4)}
+  .fab.open .fab-btn{background:#101B2E}
+  .fab-menu{display:flex;flex-direction:column;position:absolute;bottom:62px;right:0;
+    min-width:118px;background:#fff;border:1px solid #DCE3F0;border-radius:14px;
+    box-shadow:0 14px 44px rgba(16,27,46,.22);padding:6px;
+    opacity:0;pointer-events:none;transform:translateY(8px);transition:.22s}
+  .fab.open .fab-menu{opacity:1;pointer-events:auto;transform:none}
+  .fab-menu a{font-family:'NanumSquare',sans-serif;font-weight:700;font-size:.86rem;
+    color:#101B2E;text-decoration:none;padding:10px 16px;border-radius:9px}
+  .fab-menu a:active{background:#F0F4FB;color:#043786}
+}
+
 /* ---------- intro-gate mode ---------- */
 body[data-mode="gate"]:not(.entered) .site{display:none}
 body[data-mode="gate"]:not(.entered) header.nav{display:none}

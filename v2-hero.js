@@ -460,11 +460,33 @@
     else if (y < navY - 8) nav.classList.remove('nav-hide');
     navY = y;
   }, { passive: true });
+  const fab = document.querySelector('.fab');
   ScrollTrigger.create({
     trigger: '.site', start: 'top 100',
-    onEnter: () => nav.classList.add('scrolled'),
-    onLeaveBack: () => nav.classList.remove('scrolled')
+    onEnter: () => { nav.classList.add('scrolled'); if (fab) fab.classList.add('show'); },
+    onLeaveBack: () => { nav.classList.remove('scrolled'); if (fab) fab.classList.remove('show', 'open'); }
   });
+  /* 모바일 플로팅 메뉴 토글 */
+  if (fab) {
+    const btn = fab.querySelector('.fab-btn');
+    btn.addEventListener('click', () => {
+      const open = fab.classList.toggle('open');
+      btn.setAttribute('aria-expanded', open);
+      btn.textContent = open ? '×' : '☰';
+    });
+    fab.querySelectorAll('.fab-menu a').forEach(a => a.addEventListener('click', () => {
+      fab.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+      btn.textContent = '☰';
+    }));
+    document.addEventListener('click', e => {
+      if (!fab.contains(e.target)) {
+        fab.classList.remove('open');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.textContent = '☰';
+      }
+    });
+  }
 
   /* ---------- news carousel ---------- */
   const track = document.querySelector('.car-track');
