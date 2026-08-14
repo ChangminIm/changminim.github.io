@@ -30,7 +30,7 @@
     ml: { label: '다수준모형', parent: 'stat' },
     pat: { label: '패턴·군집', parent: 'stat' },
     gwr: { label: 'GW모형', parent: 'stat' },
-    ai: { label: '공간AI', parent: null },
+    ai: { label: 'GeoAI', parent: null },
     coh: { label: '코호트·통계', parent: null },
   };
   const TAGS = [
