@@ -30,7 +30,7 @@
     ml: { label: '다수준모형', parent: 'stat' },
     pat: { label: '패턴·군집', parent: 'stat' },
     gwr: { label: 'GW모형', parent: 'stat' },
-    ai: { label: 'ML·XAI', parent: null },
+    ai: { label: '공간AI', parent: null },
     coh: { label: '코호트·통계', parent: null },
   };
   const TAGS = [
@@ -93,6 +93,8 @@
       add({ id: 'm:' + k, key: k, label: v.label, kind: 'method', parent: v.parent });
       if (v.parent) links.push({ source: 'm:' + k, target: 'm:' + v.parent });
     });
+    /* 공간AI(공간 머신러닝)는 공간통계와도 이어짐 */
+    links.push({ source: 'm:ai', target: 'm:stat' });
     Object.entries(SUBS).forEach(([k, v]) => {
       if (!expanded.has(v.parent)) return;
       const n = add({ id: 's:' + k, key: k, label: v.label, kind: 'sub', parent: v.parent });
