@@ -6,11 +6,13 @@ header.nav{position:fixed;top:0;left:0;right:0;z-index:60;height:62px;
   background:rgba(4,8,16,.55);backdrop-filter:blur(10px);border-bottom:1px solid rgba(150,170,210,.14)}
 header.nav .nav-inner{max-width:1180px;margin:0 auto;padding:0 28px;width:100%;
   display:flex;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:11px;font-weight:750;font-size:1.02rem;letter-spacing:.01em;color:#EFF3FA;text-decoration:none}
+.brand{display:flex;align-items:center;gap:11px;font-family:'NanumSquare',"Pretendard Variable",Pretendard,sans-serif;
+  font-weight:800;font-size:1.02rem;letter-spacing:.01em;color:#EFF3FA;text-decoration:none}
 .brand img{width:36px;height:36px;display:block}
 .brand small{font-weight:400;opacity:.55;margin-left:8px;font-size:.76rem}
 .nav-links{display:flex;gap:26px}
-.nav-links a{font-family:"IBM Plex Mono",monospace;font-size:.75rem;letter-spacing:.09em;
+.nav-links a{font-family:'NanumSquare',"Pretendard Variable",Pretendard,sans-serif;
+  font-weight:700;font-size:.78rem;letter-spacing:.05em;
   text-transform:uppercase;color:#C7D2E4;text-decoration:none;transition:color .2s}
 .nav-links a i{font-style:normal;opacity:.5;margin-left:4px}
 .nav-links a:hover{color:#FFB86B}
