@@ -451,6 +451,15 @@
 
   /* nav chrome switch (variant B: light-chrome body class) */
   const nav = document.querySelector('header.nav');
+  /* 모바일: 스크롤 내리면 내비 숨김, 올리면 다시 표시 */
+  let navY = window.scrollY;
+  window.addEventListener('scroll', () => {
+    const y = window.scrollY;
+    if (window.innerWidth > 720) { nav.classList.remove('nav-hide'); navY = y; return; }
+    if (y > navY + 8 && y > 140) nav.classList.add('nav-hide');
+    else if (y < navY - 8) nav.classList.remove('nav-hide');
+    navY = y;
+  }, { passive: true });
   ScrollTrigger.create({
     trigger: '.site', start: 'top 100',
     onEnter: () => nav.classList.add('scrolled'),

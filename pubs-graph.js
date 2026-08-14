@@ -63,7 +63,26 @@
       .attr('stroke', '#C9D4E6').attr('stroke-width', 1.1).attr('stroke-opacity', .8);
 
     const node = svg.append('g').selectAll('g').data(nodes).join('g')
-      .attr('cursor', d => d.kind === 'paper' && d.p.doi ? 'pointer' : 'grab');
+      .attr('cursor', d => d.kind !== 'paper' || d.p.doi ? 'pointer' : 'grab');
+
+    /* 허브 클릭 → 해당 논문 목록 팝업 */
+    const panel = d3.select(el).append('div').attr('class', 'gpanel').style('display', 'none');
+    function showPanel(d) {
+      const key = d.id.slice(2), isTopic = d.kind === 'topic';
+      const items = window.LAB_PUBS
+        .map(p => ({ p, g: tagOf(p) }))
+        .filter(x => x.g && (isTopic ? x.g.t.includes(key) : x.g.m.includes(key)));
+      const rows = items.map(x => {
+        const inner = `<b>${x.p.y}</b> · ${x.p.t.replace(/</g, '&lt;')}`;
+        return x.p.doi
+          ? `<a href="https://doi.org/${x.p.doi}" target="_blank" rel="noopener">${inner}</a>`
+          : `<span>${inner}</span>`;
+      }).join('');
+      panel.html(`<div class="gp-head"><span style="background:${isTopic ? NAVY : GREEN}"></span>` +
+        `${d.label} · ${items.length}편<button type="button" aria-label="닫기">×</button></div>` + rows)
+        .style('display', 'block');
+      panel.select('button').on('click', () => panel.style('display', 'none'));
+    }
 
     node.filter(d => d.kind !== 'paper').append('circle')
       .attr('r', r).attr('fill', d => d.kind === 'topic' ? NAVY : GREEN)
@@ -82,6 +101,8 @@
       .on('mousemove', e => tip.style('left', (e.clientX + 14) + 'px').style('top', (e.clientY - 10) + 'px'))
       .on('mouseleave', () => tip.style('opacity', 0))
       .on('click', (e, d) => { if (d.p.doi) window.open('https://doi.org/' + d.p.doi, '_blank', 'noopener'); });
+    node.filter(d => d.kind !== 'paper')
+      .on('click', (e, d) => { e.stopPropagation(); showPanel(d); });
 
     const sim = d3.forceSimulation(nodes)
       .force('link', d3.forceLink(links).id(d => d.id).distance(mobile ? 52 : 72).strength(.5))
@@ -100,10 +121,20 @@
         node.attr('transform', d => `translate(${d.x},${d.y})`);
       });
 
+    /* 계속 살아있는 움직임: 낮은 알파 타깃 유지 + 주기적으로 논문 점에 살짝 충격 */
+    sim.alphaDecay(.012).alphaTarget(.03).restart();
+    if (el._kick) clearInterval(el._kick);
+    el._kick = setInterval(() => {
+      const papers = nodes.filter(n => n.kind === 'paper' && n.fx == null);
+      const n = papers[Math.floor(Math.random() * papers.length)];
+      if (n) { n.vx += (Math.random() - .5) * 5; n.vy += (Math.random() - .5) * 5; }
+      if (sim.alpha() < .1) sim.alpha(.1);
+    }, 1200);
+
     node.call(d3.drag()
-      .on('start', (e, d) => { if (!e.active) sim.alphaTarget(.25).restart(); d.fx = d.x; d.fy = d.y; })
+      .on('start', (e, d) => { if (!e.active) sim.alphaTarget(.3).restart(); d.fx = d.x; d.fy = d.y; })
       .on('drag', (e, d) => { d.fx = e.x; d.fy = e.y; })
-      .on('end', (e, d) => { if (!e.active) sim.alphaTarget(0); d.fx = null; d.fy = null; }));
+      .on('end', (e, d) => { if (!e.active) sim.alphaTarget(.03); d.fx = null; d.fy = null; }));
   }
 
   render();

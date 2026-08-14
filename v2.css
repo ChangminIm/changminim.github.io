@@ -2,7 +2,7 @@
 
 /* ---------- fixed nav (기존 사이트 문법 이식) ---------- */
 header.nav{position:fixed;top:0;left:0;right:0;z-index:60;height:62px;
-  display:flex;align-items:center;transition:background .35s,border-color .35s;
+  display:flex;align-items:center;transition:background .35s,border-color .35s,transform .3s;
   background:rgba(4,8,16,.55);backdrop-filter:blur(10px);border-bottom:1px solid rgba(150,170,210,.14)}
 header.nav .nav-inner{max-width:1180px;margin:0 auto;padding:0 28px;width:100%;
   display:flex;align-items:center;justify-content:space-between}
@@ -16,6 +16,7 @@ header.nav .nav-inner{max-width:1180px;margin:0 auto;padding:0 28px;width:100%;
   text-transform:uppercase;color:#C7D2E4;text-decoration:none;transition:color .2s}
 .nav-links a i{font-style:normal;opacity:.5;margin-left:4px}
 .nav-links a:hover{color:#FFB86B}
+header.nav.nav-hide{transform:translateY(-100%)}
 /* 본문 진입 후 라이트 크롬 (variant B) */
 body.light-chrome header.nav.scrolled{background:rgba(245,247,251,.85);border-color:#DCE3F0}
 body.light-chrome header.nav.scrolled .brand{color:#101B2E}
