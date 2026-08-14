@@ -423,12 +423,23 @@
     track.addEventListener('scroll', sync);
     window.addEventListener('resize', sync);
     sync();
-    /* 카드 클릭 시 진동 */
-    if (!REDUCED) track.querySelectorAll('.news-card').forEach(c => {
+    /* 카드 클릭: 사진 여러 장이면 다음 사진으로 전환, 아니면 진동 */
+    track.querySelectorAll('.news-card').forEach(c => {
+      const sw = c.querySelector('.imgswap');
       c.addEventListener('click', () => {
-        c.classList.remove('shake');
-        void c.offsetWidth; /* 애니메이션 재시작 트리거 */
-        c.classList.add('shake');
+        if (sw) {
+          const imgs = Array.from(sw.querySelectorAll('img'));
+          const dots = Array.from(sw.querySelectorAll('.idots i'));
+          const i = imgs.findIndex(im => im.classList.contains('on'));
+          const n = (i + 1) % imgs.length;
+          imgs[i].classList.remove('on');
+          imgs[n].classList.add('on');
+          dots.forEach((d, k) => d.classList.toggle('on', k === n));
+        } else if (!REDUCED) {
+          c.classList.remove('shake');
+          void c.offsetWidth; /* 애니메이션 재시작 트리거 */
+          c.classList.add('shake');
+        }
       });
     });
     if (!REDUCED) gsap.from('.news-card', {
