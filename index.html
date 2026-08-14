@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.min.css">
-<link rel="stylesheet" href="common.css?v=6">
+<link rel="stylesheet" href="common.css?v=7">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css">
 <link rel="stylesheet" href="v2.css?v=4">
 <style>
@@ -185,8 +185,8 @@
         <p class="lead">연구 주제는 특정 분야에 한정되지 않습니다. 감염병, 정신건강, 소아비만, 산림 생태, 환경 노출, 지방소멸 등 <b>공간 데이터로 분석 가능한 문제</b>를 폭넓게 다룹니다.</p>
         <p class="lead-en">Topics are not limited to a single domain: infectious disease, mental health, childhood obesity, forest ecology, environmental exposure, and regional decline.</p>
 
-        <p class="lead">방법론으로는 공간통계, 공간 머신러닝, 인과추론, 설명가능한 AI(GeoAI)를 사용합니다. 공동연구와 대학원 진학 문의를 받습니다.</p>
-        <p class="lead-en">Methods include spatial statistics, spatial machine learning, causal inference, and explainable AI. Open to collaboration and graduate inquiries.</p>
+        <p class="lead">방법론으로는 공간통계, 공간 머신러닝, 설명가능한 AI(GeoAI)를 사용합니다. 공동연구와 대학원 진학 문의를 받습니다.</p>
+        <p class="lead-en">Methods include spatial statistics, spatial machine learning, and explainable AI. Open to collaboration and graduate inquiries.</p>
       </div>
       <div class="portrait">
         <img src="img/prof.jpg" alt="임창민 교수 프로필">
@@ -218,10 +218,10 @@
       </div>
       <div class="card">
         <div class="k mono">Core Area / 02</div>
-        <h4>GIS · 공간모형 · GeoAI<br>GIS, Spatial Modeling &amp; GeoAI</h4>
-        <p>공간 빅데이터를 읽는 방법. 고유벡터 공간필터링에서 XGBoost·GeoShapley, 공간 인과추론, 설명가능한 AI, 지식그래프, 행위자 기반 모형까지.</p>
-        <p class="en">Methods for reading spatial big data, from eigenvector spatial filtering toward spatial causal inference, explainable AI, knowledge graphs, and agent-based simulation.</p>
-        <div class="chips"><span class="chip">Spatial causal inference</span><span class="chip">Explainable AI</span><span class="chip">GeoAI</span><span class="chip">Knowledge graphs</span><span class="chip">Agent-based models</span></div>
+        <h4>GIS · 공간통계 · GeoAI<br>GIS, Spatial Statistics &amp; GeoAI</h4>
+        <p>공간 빅데이터를 읽는 방법. 고유벡터 공간필터링에서 XGBoost·GeoShapley, 설명가능한 AI, 지식그래프, 행위자 기반 모형까지.</p>
+        <p class="en">Methods for reading spatial big data, from eigenvector spatial filtering toward explainable AI, knowledge graphs, and agent-based simulation.</p>
+        <div class="chips"><span class="chip">Spatial statistics</span><span class="chip">Explainable AI</span><span class="chip">GeoAI</span><span class="chip">Knowledge graphs</span><span class="chip">Agent-based models</span></div>
       </div>
     </div>
     <div class="stats">
@@ -295,6 +295,8 @@
       <div><div class="n">12</div><div class="k">International publications</div></div>
       <div><div class="n">05</div><div class="k">Domestic publications</div></div>
     </div>
+    <div class="graph-cap"><i style="background:#043786"></i>주제 <i style="background:#00833F"></i>방법론 <i style="background:#94A6C4"></i>논문 — 점을 끌어 볼 수 있고, 논문 점을 클릭하면 해당 논문으로 이동합니다.</div>
+    <div id="pub-graph"></div>
     <div id="pub-list"></div>
   </div></section>
 
@@ -328,6 +330,7 @@
 <script src="data.js?v=2"></script>
 <script src="pubs.js?v=4"></script>
 <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="pubs-graph.js?v=1"></script>
 <script src="https://cdn.jsdelivr.net/npm/maplibre-gl@4.7.1/dist/maplibre-gl.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>

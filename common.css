@@ -210,6 +210,17 @@ p.lead-en + p.lead{margin-top:34px}
 .tl-row .t{font-size:1rem;line-height:1.55}
 .tl-row .t small{display:block;opacity:.6;font-size:.88rem;margin-top:2px}
 
+/* publications network graph */
+#pub-graph{margin:14px 0 6px;border:1px solid var(--card-line);background:var(--card-bg);border-radius:14px;overflow:hidden}
+#pub-graph svg{display:block;width:100%;height:auto}
+#pub-graph text{font-family:'NanumSquare',"Pretendard Variable",Pretendard,sans-serif}
+.graph-cap{font-size:.78rem;opacity:.65;margin-top:26px;display:flex;align-items:center;flex-wrap:wrap;row-gap:4px}
+.graph-cap i{width:10px;height:10px;border-radius:50%;display:inline-block;margin:0 5px 0 0;flex:none}
+.graph-cap i:not(:first-child){margin-left:12px}
+.gtip{position:fixed;z-index:80;pointer-events:none;opacity:0;background:var(--card-bg);
+  border:1px solid var(--card-line);border-radius:8px;padding:8px 12px;font-size:.8rem;
+  max-width:360px;line-height:1.5;box-shadow:0 8px 30px rgba(16,27,46,.14);transition:opacity .15s}
+
 /* publications */
 .pub-group{font-family:"IBM Plex Mono",'NanumSquare',monospace;font-size:.78rem;letter-spacing:.14em;
   text-transform:uppercase;color:var(--knu-green,var(--accent));margin:44px 0 8px;
