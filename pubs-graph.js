@@ -29,6 +29,7 @@
     esf: { label: '공간필터링', parent: 'stat' },
     ml: { label: '다수준모형', parent: 'stat' },
     pat: { label: '패턴·군집', parent: 'stat' },
+    gwr: { label: 'GW모형', parent: 'stat' },
     ai: { label: 'ML·XAI', parent: null },
     coh: { label: '코호트·통계', parent: null },
   };
@@ -40,7 +41,7 @@
     { k: '10.5933/JKAPD.2024.51.1.40', s: ['dental'], m: ['ml'] },
     { k: '10.1016/j.foreco.2022.120763', s: ['forest'], m: ['esf'] },
     { k: 'special-purpose district', s: ['park'], m: ['pat'] },
-    { k: '10.3390/ijerph182312595', s: ['covid'], m: ['pat'] },
+    { k: '10.3390/ijerph182312595', s: ['covid'], m: ['gwr'] },
     { k: '10.1186/s12199-021-00942-4', s: ['air'], m: ['coh'] },
     { k: '10.1371/journal.pone.0255985', s: ['land'], m: ['coh'] },
     { k: '10.14249/EIA.2021.30.2.89', s: ['park'], m: ['coh'] },
