@@ -299,11 +299,12 @@
     map.setPaintProperty('chor', 'fill-opacity', cop * (1 - 0.75 * range(p, 0.84, 0.92)));
     map.setPaintProperty('chor-line', 'line-opacity', 0.5 * range(p, 0.36, 0.48));
     map.setPaintProperty('out-line', 'line-opacity', 0.8 * range(p, 0.34, 0.44));
-    /* 핫스팟 경계선은 마커가 각 지역에 도착한 뒤에 켜짐 */
-    map.setPaintProperty('hot-line', 'line-opacity', 0.95 * range(p, 0.685, 0.72) * (1 - range(p, 0.84, 0.90)));
-    /* 진앙 마커: 한 점(군집 중심)에서 각 시군구 중심으로 퍼짐 */
+    /* 핫스팟 경계선은 마커 분할이 끝난 뒤에 켜짐 */
+    map.setPaintProperty('hot-line', 'line-opacity', 0.95 * range(p, 0.78, 0.82) * (1 - range(p, 0.84, 0.90)));
+    /* 진앙 마커: 핫스팟 씬(0.70)에서는 군집 중심 한 점에 모여 맥동,
+       지역 분석 씬으로 넘어가는 0.70-0.79 구간에서 각 시군구로 분할 */
     if (hotCenter) hotList.forEach((h, i) => {
-      const t = smooth(range(p, 0.65 + i * 0.004, 0.685 + i * 0.004));
+      const t = smooth(range(p, 0.70 + i * 0.006, 0.76 + i * 0.006));
       h.marker.setLngLat([lerp(hotCenter[0], h.pos[0], t), lerp(hotCenter[1], h.pos[1], t)]);
     });
     if (p >= 0.46 && p <= 0.66) setYear(Y0 + (Y1 - Y0) * range(p, 0.46, 0.64));
