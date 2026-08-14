@@ -122,7 +122,7 @@
       tip.style('opacity', 1)
         .style('left', (e.originalEvent.clientX + 16) + 'px')
         .style('top', (e.originalEvent.clientY - 10) + 'px')
-        .html(`<b>${f.properties.nm}</b> · ${Math.round(curYear)}<br>우울감경험률 ${v == null ? '–' : v.toFixed(1)}%`);
+        .html(`<b>${f.properties.nm}</b> · ${Math.round(curYear)}<br>우울감경험률 ${v == null ? '-' : v.toFixed(1)}%`);
     });
     map.on('mouseleave', 'chor', () => { map.getCanvas().style.cursor = ''; tip.style('opacity', 0); });
     map.on('click', 'chor', e => select(e.features[0].properties.cd, curP > 0.46));
@@ -181,7 +181,7 @@
     document.querySelector('.panel .p-sub').innerHTML =
       `${Y1}년 우울감경험률 <b style="color:${POS}">${last?.toFixed(1)}%</b>` +
       (delta == null ? '' : ` · ${Y0}년 대비 ${delta >= 0 ? '+' : ''}${delta.toFixed(1)}%p`) +
-      (isHot ? `<br><b style="color:${POS}">팬데믹기(2020–22) 핫스팟</b> — 평균 ${hot.P2.dep.toFixed(1)}%로 주변 지역과 함께 높았던 군집 (LISA High-High)` : '');
+      (isHot ? `<br><b style="color:${POS}">팬데믹기(2020-22) 핫스팟</b> — 평균 ${hot.P2.dep.toFixed(1)}%로 주변 지역과 함께 높았던 군집 (LISA High-High)` : '');
 
     /* 헤드라인 — 가장 크게 끌어올린 요인 */
     const rows0 = D.shapLocal[cd] || [];
