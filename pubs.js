@@ -49,15 +49,14 @@ window.LAB_PUBS = [
   });
   box.innerHTML = html;
 
-  /* 그룹 접기 - 모바일에서는 첫 그룹만 펼친 상태로 시작 */
-  const isMobile = window.matchMedia('(max-width: 640px)').matches;
+  /* 그룹 접기 - 최신 그룹만 펼친 상태로 시작 */
   box.querySelectorAll('.pub-group').forEach((head, i) => {
     const body = head.nextElementSibling;
     const set = open => {
       head.setAttribute('aria-expanded', open);
       body.classList.toggle('collapsed', !open);
     };
-    if (isMobile && i > 0) set(false);
+    if (i > 0) set(false);
     head.addEventListener('click', () => set(head.getAttribute('aria-expanded') !== 'true'));
   });
 })();
