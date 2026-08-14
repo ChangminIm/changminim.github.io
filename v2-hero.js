@@ -136,7 +136,7 @@
       el.className = 'hs';
       el.title = D.names[h.cd];
       el.innerHTML = '<span class="ring"></span><span class="ring r2"></span><span class="dot"></span>';
-      el.addEventListener('click', ev => { ev.stopPropagation(); select(h.cd, true); });
+      el.addEventListener('click', ev => { ev.stopPropagation(); select(h.cd, curP > 0.46); });
       h.marker = new maplibregl.Marker({ element: el, pitchAlignment: 'map', rotationAlignment: 'map' })
         .setLngLat(h.pos).addTo(map);
     });
@@ -144,6 +144,9 @@
       d3.mean(hotList, h => h.pos[0]),
       d3.mean(hotList, h => h.pos[1])
     ];
+    /* 로드 직후 현재 스크롤 위치 기준으로 마커·레이어 상태 동기화
+       (첫 화면에서 진앙이 한 점으로 보이게) */
+    if (!REDUCED) drive(curP);
   });
 
   function setYear(yf, force) {
@@ -300,16 +303,16 @@
     map.setPaintProperty('chor-line', 'line-opacity', 0.5 * range(p, 0.36, 0.48));
     map.setPaintProperty('out-line', 'line-opacity', 0.8 * range(p, 0.34, 0.44));
     /* 핫스팟 경계선은 마커 분할이 끝난 뒤에 켜짐 */
-    map.setPaintProperty('hot-line', 'line-opacity', 0.95 * range(p, 0.78, 0.82) * (1 - range(p, 0.84, 0.90)));
-    /* 진앙 마커: 핫스팟 씬(0.70)에서는 군집 중심 한 점에 모여 맥동,
-       지역 분석 씬으로 넘어가는 0.70-0.79 구간에서 각 시군구로 분할 */
+    map.setPaintProperty('hot-line', 'line-opacity', 0.95 * range(p, 0.685, 0.72) * (1 - range(p, 0.84, 0.90)));
+    /* 진앙 마커: 첫 화면부터 수도권(군집 중심) 한 점에서 맥동,
+       핫스팟 씬으로 확대해 들어가는 0.60-0.685 구간에서 6개 시군구로 분할 */
     if (hotCenter) hotList.forEach((h, i) => {
-      const t = smooth(range(p, 0.70 + i * 0.006, 0.76 + i * 0.006));
+      const t = smooth(range(p, 0.60 + i * 0.005, 0.66 + i * 0.005));
       h.marker.setLngLat([lerp(hotCenter[0], h.pos[0], t), lerp(hotCenter[1], h.pos[1], t)]);
     });
     if (p >= 0.46 && p <= 0.66) setYear(Y0 + (Y1 - Y0) * range(p, 0.46, 0.64));
     else if (p > 0.66) setYear(Y1);
-    heroEl.classList.toggle('pulses-on', p > 0.64 && p < 0.86);
+    heroEl.classList.toggle('pulses-on', p < 0.86);
     heroEl.classList.toggle('sea-on', p > 0.02 && p < 0.40);
     if (typeof updateDots === 'function') updateDots(p);
     const wantLabels = p > 0.42;
