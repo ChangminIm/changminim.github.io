@@ -211,6 +211,7 @@ p.lead-en + p.lead{margin-top:34px}
 .tl-row .t small{display:block;opacity:.6;font-size:.88rem;margin-top:2px}
 
 /* publications network graph */
+@keyframes hubpulse{0%{r:0;opacity:.5}100%{r:30px;opacity:0}}
 #pub-graph{position:relative;margin:14px 0 6px;border:1px solid var(--card-line);background:var(--card-bg);border-radius:14px;overflow:hidden}
 .gpanel{position:absolute;right:12px;top:12px;width:min(330px,88%);max-height:calc(100% - 24px);
   overflow:auto;background:var(--card-bg);border:1px solid var(--card-line);border-radius:12px;
