@@ -23,9 +23,9 @@ window.LAB_PUBS = [
   const box = document.getElementById('pub-list');
   if (!box || !window.LAB_PUBS) return;
   const groups = [
-    { label: '2023 — Present', test: y => y >= 2023 },
-    { label: '2020 — 2022', test: y => y >= 2020 && y <= 2022 },
-    { label: '2016 — 2019', test: y => y <= 2019 },
+    { label: '2023 - Present', test: y => y >= 2023 },
+    { label: '2020 - 2022', test: y => y >= 2020 && y <= 2022 },
+    { label: '2016 - 2019', test: y => y <= 2019 },
   ];
   const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
   const authors = a => esc(a).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');

@@ -181,13 +181,13 @@
     document.querySelector('.panel .p-sub').innerHTML =
       `${Y1}년 우울감경험률 <b style="color:${POS}">${last?.toFixed(1)}%</b>` +
       (delta == null ? '' : ` · ${Y0}년 대비 ${delta >= 0 ? '+' : ''}${delta.toFixed(1)}%p`) +
-      (isHot ? `<br><b style="color:${POS}">팬데믹기(2020-22) 핫스팟</b> — 평균 ${hot.P2.dep.toFixed(1)}%로 주변 지역과 함께 높았던 군집 (LISA High-High)` : '');
+      (isHot ? `<br><b style="color:${POS}">팬데믹기(2020-22) 핫스팟</b> · 평균 ${hot.P2.dep.toFixed(1)}%로 주변 지역과 함께 높았던 군집 (LISA High-High)` : '');
 
     /* 헤드라인 — 가장 크게 끌어올린 요인 */
     const rows0 = D.shapLocal[cd] || [];
     const topPos = rows0.filter(r => r[0] !== 'GEO' && r[1] > 0).sort((a, b) => b[1] - a[1])[0];
     document.querySelector('.panel .p-head').innerHTML = topPos
-      ? `이 지역 우울감을 가장 끌어올린 요인 — <b>${D.labels[topPos[0]].ko}</b> (+${topPos[1].toFixed(2)}%p)`
+      ? `이 지역 우울감을 가장 끌어올린 요인은 <b>${D.labels[topPos[0]].ko}</b> (+${topPos[1].toFixed(2)}%p)`
       : `이 지역은 주요 요인들이 우울감을 <b>낮추는 방향</b>으로 작용했습니다`;
     if (show) gsap.set('.panel', { autoAlpha: 1 });
 
