@@ -107,7 +107,8 @@ body{
 .site{position:relative;z-index:2;background:var(--body-bg)}
 .wrap{max-width:1080px;margin:0 auto;padding:0 28px}
 section.block{padding:110px 0}
-.sec-tag{font-size:.78rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
+.sec-tag{font-family:'NanumSquare',"Pretendard Variable",Pretendard,sans-serif;font-weight:700;
+  font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:18px}
 .block h2{font-size:clamp(1.8rem,3.6vw,2.7rem);font-weight:680;letter-spacing:-.01em;margin-bottom:24px}
 .block p.lead{font-size:1.15rem;line-height:1.78;max-width:680px;color:var(--body-ink)}
 .block p.lead + p.lead{margin-top:16px}
