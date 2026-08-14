@@ -423,6 +423,14 @@
     track.addEventListener('scroll', sync);
     window.addEventListener('resize', sync);
     sync();
+    /* 카드 클릭 시 진동 */
+    if (!REDUCED) track.querySelectorAll('.news-card').forEach(c => {
+      c.addEventListener('click', () => {
+        c.classList.remove('shake');
+        void c.offsetWidth; /* 애니메이션 재시작 트리거 */
+        c.classList.add('shake');
+      });
+    });
     if (!REDUCED) gsap.from('.news-card', {
       y: 26, autoAlpha: 0, duration: 0.7, stagger: 0.12, ease: 'power2.out',
       scrollTrigger: { trigger: '.carousel', start: 'top 82%', once: true }

@@ -5,6 +5,8 @@ body{
   font-family:"Pretendard Variable",Pretendard,-apple-system,"Segoe UI",sans-serif;
   background:var(--body-bg);color:var(--body-ink);
   -webkit-font-smoothing:antialiased;overflow-x:hidden;
+  /* 한국어 어절 단위 줄바꿈 — 단어 중간에서 끊기지 않게 */
+  word-break:keep-all;overflow-wrap:break-word;
 }
 .mono{font-family:"IBM Plex Mono",ui-monospace,Consolas,monospace}
 
@@ -143,6 +145,18 @@ section.block{padding:110px 0}
 .btn-primary:hover{transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.2)}
 @media (max-width:720px){.join-cta{padding:30px 24px}.car-btn.prev{left:4px}.car-btn.next{right:4px}}
 
+/* news card 진동 효과 (클릭) */
+@keyframes cardShake{
+  0%,100%{transform:translateX(0) rotate(0)}
+  15%{transform:translateX(-7px) rotate(-1.2deg)}
+  30%{transform:translateX(6px) rotate(1deg)}
+  45%{transform:translateX(-5px) rotate(-.8deg)}
+  60%{transform:translateX(4px) rotate(.6deg)}
+  75%{transform:translateX(-2px) rotate(-.3deg)}
+}
+.news-card{cursor:pointer}
+.news-card.shake{animation:cardShake .5s ease}
+
 /* news */
 .news-card{padding:0;overflow:hidden}
 .news-card img{width:100%;height:250px;object-fit:cover;display:block}
@@ -195,6 +209,7 @@ p.lead-en + p.lead{margin-top:34px}
 .pub .t b{font-weight:650}
 .pub .j{font-size:.9rem;opacity:.65;margin-top:5px}
 .pub .j i{font-style:italic}
+.pub .j a{overflow-wrap:anywhere} /* 긴 DOI가 레이아웃을 밀지 않도록 */
 .pub-stats{display:flex;gap:36px;margin-top:28px}
 .pub-stats .n{font-size:2.2rem;font-weight:650;line-height:1}
 .pub-stats .k{font-size:.8rem;opacity:.6;margin-top:6px}
