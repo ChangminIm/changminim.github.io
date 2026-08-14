@@ -91,9 +91,24 @@
       'line-color': tv('--map-outline'), 'line-width': 1.4, 'line-opacity': 0
     } }, firstSymbol);
 
+    /* LISA 핫·콜드스팟 레이어 (P2 팬데믹기, HH/LL만 강조) */
+    const lisaColor = ['match', ['get', 'cd']];
+    D.geo.features.forEach(f => {
+      const h = D.hotspots[f.properties.cd];
+      const c = h && h.P2.lisa === 'HH' ? '#FF4B3E'
+              : h && h.P2.lisa === 'LL' ? '#3D7BFF' : '#2C3546';
+      lisaColor.push(f.properties.cd, c);
+    });
+    lisaColor.push('#2C3546');
+    map.addLayer({ id: 'lisa', type: 'fill', source: 'sma',
+      paint: { 'fill-color': lisaColor, 'fill-opacity': 0 } }, firstSymbol);
+
     map.addLayer({ id: 'hot-line', type: 'line', source: 'sma',
-      filter: ['in', ['get', 'cd'], ['literal', hotList.map(h => h.cd)]],
-      paint: { 'line-color': tv('--accent-strong'), 'line-width': 2, 'line-opacity': 0 } }, firstSymbol);
+      filter: ['in', ['get', 'cd'], ['literal',
+        Object.entries(D.hotspots)
+          .filter(([c, h]) => h.P2.lisa === 'HH' || h.P2.lisa === 'LL')
+          .map(([c]) => c)]],
+      paint: { 'line-color': '#FFFFFF', 'line-width': 1.6, 'line-opacity': 0 } }, firstSymbol);
 
     map.addLayer({ id: 'sel-line', type: 'line', source: 'sma',
       filter: ['==', ['get', 'cd'], ''],
@@ -170,6 +185,20 @@
     `linear-gradient(90deg, ${RAMP[0]}, ${RAMP[1]}, ${RAMP[2]})`;
   document.querySelector('.legend .lab').innerHTML =
     `<span>${DMIN.toFixed(0)}%</span><span>우울감경험률</span><span>${DMAX.toFixed(0)}%+</span>`;
+
+  /* LISA 미니 범례 (핫스팟 씬에서만 표시) */
+  const lisaLegend = document.createElement('div');
+  lisaLegend.style.cssText = 'position:absolute;left:26px;bottom:64px;z-index:6;opacity:0;' +
+    'transition:opacity .25s;background:rgba(9,15,27,.84);border:1px solid rgba(148,168,206,.22);' +
+    'border-radius:999px;padding:8px 14px;font-size:.72rem;color:#C8D6EC;pointer-events:none;' +
+    'display:flex;gap:12px;align-items:center';
+  lisaLegend.innerHTML =
+    '<span style="display:flex;gap:6px;align-items:center">' +
+      '<i style="width:11px;height:11px;border-radius:3px;background:#FF4B3E"></i>핫스팟</span>' +
+    '<span style="display:flex;gap:6px;align-items:center">' +
+      '<i style="width:11px;height:11px;border-radius:3px;background:#3D7BFF"></i>콜드스팟</span>' +
+    '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:.6rem;color:#8FA3C4">LISA · 2020-22</span>';
+  heroEl.appendChild(lisaLegend);
 
   /* ---------- hotspots / panel / importance (v1 재사용) ---------- */
   /* 핫스팟 = 팬데믹기(P2) 또는 그 이후(P3) LISA High-High 군집만 */
@@ -299,10 +328,14 @@
     map.jumpTo(camAt(p));
     map.setPaintProperty('bm', 'raster-opacity', 1 - 0.78 * range(p, 0.30, 0.44));
     const cop = 0.92 * range(p, 0.34, 0.46);
-    map.setPaintProperty('chor', 'fill-opacity', cop * (1 - 0.75 * range(p, 0.84, 0.92)));
+    /* 핫스팟 씬(0.64-0.82)에서만 잠깐 LISA 지도로 전환 */
+    const lisaK = range(p, 0.64, 0.68) * (1 - range(p, 0.78, 0.82));
+    map.setPaintProperty('chor', 'fill-opacity', cop * (1 - 0.75 * range(p, 0.84, 0.92)) * (1 - lisaK));
+    map.setPaintProperty('lisa', 'fill-opacity', 0.9 * lisaK);
+    lisaLegend.style.opacity = lisaK;
     map.setPaintProperty('chor-line', 'line-opacity', 0.5 * range(p, 0.36, 0.48));
     map.setPaintProperty('out-line', 'line-opacity', 0.8 * range(p, 0.34, 0.44));
-    map.setPaintProperty('hot-line', 'line-opacity', 0.95 * range(p, 0.62, 0.66) * (1 - range(p, 0.84, 0.90)));
+    map.setPaintProperty('hot-line', 'line-opacity', 0.85 * lisaK);
     /* 진앙 마커: 첫 화면(전국 뷰)에서는 수도권 위 한 점에서 맥동,
        카메라가 수도권으로 확대되는 0.30-0.40 구간에서 6개 시군구 중심으로 분할.
        확대가 끝난 뒤에는 항상 각 시군구 중심 위에 고정 */
