@@ -18,14 +18,13 @@ window.LAB_PUBS = [
   { y: 2016, a: "**Im C**, Kim Y.", t: "Spatial socio-environmental analysis of tuberculosis in South Korea using eigenvector spatial filtering methodology.", j: "J. Korean Cartographic Association, 16(3), 89-101", doi: "10.16879/jkca.2016.16.3.089" },
 ];
 
-/* 렌더러 — 연도 그룹(2023—present / 2020—2022 / 2016—2019)으로 출력 */
+/* 렌더러: 연도 그룹(2023 - Present / 2016 - 2022)으로 출력 */
 (function () {
   const box = document.getElementById('pub-list');
   if (!box || !window.LAB_PUBS) return;
   const groups = [
     { label: '2023 - Present', test: y => y >= 2023 },
-    { label: '2020 - 2022', test: y => y >= 2020 && y <= 2022 },
-    { label: '2016 - 2019', test: y => y <= 2019 },
+    { label: '2016 - 2022', test: y => y <= 2022 },
   ];
   const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
   const authors = a => esc(a).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>');
@@ -33,7 +32,7 @@ window.LAB_PUBS = [
   groups.forEach(g => {
     const items = window.LAB_PUBS.filter(p => g.test(p.y));
     if (!items.length) return;
-    html += `<button class="pub-group" type="button" aria-expanded="true">${g.label}<span class="cnt">${items.length}</span><span class="chev">⌄</span></button>`;
+    html += `<button class="pub-group" type="button" aria-expanded="true">${g.label}<span class="cnt">${items.length}편</span><span class="chev">▾ 접기</span><span class="chev-open">▸ 펼치기</span></button>`;
     html += `<div class="pub-items">`;
     items.forEach(p => {
       const jj = p.review
