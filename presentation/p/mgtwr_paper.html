@@ -210,12 +210,12 @@ const tip=document.getElementById("tip");
 svg.addEventListener("mousemove",e=>{const t=e.target;if(t.tagName==="path"){const d=(DATA[dv][vv][yr]||{})[t.getAttribute("data-cd")];if(d){tip.style.opacity=1;tip.style.left=(e.clientX+12)+"px";tip.style.top=(e.clientY+12)+"px";tip.textContent="β "+(d[0]>=0?"+":"")+d[0]+(Math.abs(d[1])<1.96?" (비유의)":"");}}});
 svg.addEventListener("mouseleave",()=>tip.style.opacity=0);
 const deck=document.getElementById("deck"),slides=document.querySelectorAll(".slide");
-function upd(){const i=Math.round(deck.scrollLeft/innerWidth);document.getElementById("pageNum").textContent=(i+1)+" / "+slides.length;document.getElementById("progress").style.width=((i+1)/slides.length*100)+"%";}
-function go(i){i=Math.max(0,Math.min(slides.length-1,i));deck.scrollTo({left:i*innerWidth});}
+function upd(){const i=Math.round(deck.scrollLeft/innerWidth);cur=i;document.getElementById("pageNum").textContent=(i+1)+" / "+slides.length;document.getElementById("progress").style.width=((i+1)/slides.length*100)+"%";}
+let cur=0;function go(i){cur=Math.max(0,Math.min(slides.length-1,i));deck.scrollTo({left:cur*innerWidth});upd();}
 deck.addEventListener("scroll",upd);
-document.getElementById("nextSlide").onclick=()=>go(Math.round(deck.scrollLeft/innerWidth)+1);
-document.getElementById("prevSlide").onclick=()=>go(Math.round(deck.scrollLeft/innerWidth)-1);
+document.getElementById("nextSlide").onclick=()=>go(cur+1);
+document.getElementById("prevSlide").onclick=()=>go(cur-1);
 document.getElementById("fsBtn").onclick=()=>{if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen();};
-addEventListener("keydown",e=>{if(e.key==="ArrowRight")go(Math.round(deck.scrollLeft/innerWidth)+1);if(e.key==="ArrowLeft")go(Math.round(deck.scrollLeft/innerWidth)-1);if(e.key==="f"||e.key==="F")document.getElementById("fsBtn").onclick();});
+addEventListener("keydown",e=>{if(e.key==="ArrowRight"){e.preventDefault();go(cur+1);}if(e.key==="ArrowLeft"){e.preventDefault();go(cur-1);}if(e.key==="f"||e.key==="F")document.getElementById("fsBtn").onclick();});
 render();upd();
 </script></body></html>
