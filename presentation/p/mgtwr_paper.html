@@ -224,7 +224,7 @@ function css(n){return getComputedStyle(document.documentElement).getPropertyVal
 function gray(){return css('--line');}
 function vmaxFor(d,v){let a=[];const yd=DATA[d][v];for(const y in yd)for(const c in yd[y])a.push(Math.abs(yd[y][c][0]));a.sort((x,y)=>x-y);return a[Math.floor(a.length*0.97)]||0.1;}
 function cls_iv(val,br){let c=0;for(let i=0;i<br.length;i++)if(val>br[i])c++;return c;}
-function fmtBr(b){return (Math.abs(b)>=100?b.toFixed(0):b.toFixed(1));}
+function fmtBr(b){const a=Math.abs(b);return a>=100?b.toFixed(0):(a>=1?b.toFixed(1):b.toFixed(2));}
 function setLegend(rows){document.getElementById("leglist").innerHTML=rows.map(r=>'<div class="leg-item"><span class="leg-sw" style="background:'+r.c+'"></span>'+r.t+'</div>').join("");}
 function renderMap(){
   if(mode==="coef"){
