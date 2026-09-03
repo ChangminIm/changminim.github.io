@@ -506,7 +506,8 @@
     /* 카드 클릭: 사진 여러 장이면 다음 사진으로 전환, 아니면 진동 */
     track.querySelectorAll('.news-card').forEach(c => {
       const sw = c.querySelector('.imgswap');
-      c.addEventListener('click', () => {
+      c.addEventListener('click', (ev) => {
+        if (ev.target.closest('a')) return; /* QR·링크 클릭은 사진 전환 안 함 */
         if (sw) {
           const imgs = Array.from(sw.querySelectorAll('img'));
           const dots = Array.from(sw.querySelectorAll('.idots i'));
