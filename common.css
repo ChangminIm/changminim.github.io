@@ -175,15 +175,16 @@ section.block{padding:110px 0}
   color:var(--accent);margin-bottom:8px}
 .news-card h4{font-size:1.08rem;line-height:1.5;margin-bottom:8px}
 .news-card p{font-size:.9rem;line-height:1.6;opacity:.7}
-.news-card .nrow{display:flex;gap:16px;align-items:flex-start}
-.news-card .nrow p{flex:1 1 auto;min-width:0;margin:0}
-.news-card .nqr{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:6px;
-  margin-top:4px;text-decoration:none;color:inherit}
-.news-card .nqr img{width:82px;height:82px;border:1px solid rgba(0,0,0,.1);border-radius:6px;
-  object-fit:contain;background:#fff;padding:4px}
-.news-card .nqr b{font-size:.78rem;color:var(--accent);white-space:nowrap}
+.news-card .nrow{display:flex;gap:14px;align-items:flex-end}
+.news-card .nrow p{flex:1 1 auto;min-width:0;margin:0;opacity:1;color:rgba(0,0,0,.66)}
+.news-card .ptitle{color:var(--accent);font-weight:700}
+.news-card .nqr{flex:0 0 auto;display:flex;flex-direction:column;align-items:center;gap:4px;
+  text-decoration:none;color:inherit}
+.news-card .nqr img{width:64px;height:64px;border:1px solid rgba(0,0,0,.1);border-radius:5px;
+  object-fit:contain;background:#fff;padding:3px}
+.news-card .nqr b{font-family:"IBM Plex Mono",'NanumSquare',monospace;font-size:.66rem;letter-spacing:.04em;
+  color:var(--accent);white-space:nowrap;font-weight:500}
 .news-card .nqr:hover b{text-decoration:underline}
-@media(max-width:480px){.news-card .nqr img{width:72px;height:72px}}
 
 /* about: 텍스트 + 대형 프로필 */
 .about-grid{display:grid;grid-template-columns:1.05fr .75fr;gap:64px;align-items:start;margin-top:8px}
