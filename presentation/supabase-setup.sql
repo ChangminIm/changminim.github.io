@@ -18,9 +18,9 @@ create policy "public read" on public.presentation_locks
 -- insert/update/delete 정책 없음 → anon 키로는 아래 RPC로만 쓸 수 있음
 
 -- 3. 초기 데이터 (2026-08-04 기준 사이트 locks.json과 동일)
---    마스터키: rladmsgP159! / 개별 자료: knu2026 (해시만 저장)
+--    (평문 비밀번호는 기록하지 않음 — 해시만 저장)
 insert into public.presentation_locks (id, data) values ('main', '{
-  "master": "848b35ccad0a714c819fd00da9a9c9ee44763bd3dd2f6458dda7ab8e969cae25",
+  "master": "3acc80ca9b3ccd5c54ef785db833a437210130e630ffbe35c3704585bb730937",
   "items": {
     "ws-2026-08": "c8c9c8145447b97cd086c008f5c9d9410a140b32ea632f601eec14e371693a87",
     "mgtwr-2026-07": "c8c9c8145447b97cd086c008f5c9d9410a140b32ea632f601eec14e371693a87",
