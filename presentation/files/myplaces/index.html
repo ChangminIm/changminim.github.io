@@ -1,0 +1,52 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>김공주의 장소 지도</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<style>
+body{margin:0;font-family:'Malgun Gothic',sans-serif;display:flex;height:100vh}
+aside{width:300px;background:#fff;border-right:1px solid #e3e6eb;display:flex;flex-direction:column}
+aside h1{font-size:20px;margin:0;padding:18px 18px 6px;color:#143c7c}
+aside p{margin:0;padding:0 18px 12px;font-size:13px;color:#667}
+.filters{display:flex;flex-wrap:wrap;gap:6px;padding:0 18px 12px}
+.filters button{border:1px solid #d5dbe5;background:#fff;border-radius:999px;padding:4px 10px;font-size:12px;cursor:pointer}
+.filters button.on{background:#143c7c;color:#fff;border-color:#143c7c}
+ul{list-style:none;margin:0;padding:0;overflow:auto;flex:1}
+li{padding:10px 18px;border-top:1px solid #eef0f4;cursor:pointer;font-size:14px}
+li:hover{background:#f3f6fb}
+li b{display:block;font-size:14px}
+li span{font-size:12px;color:#778}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+#map{flex:1}
+.leaflet-popup-content{font-size:14px}
+</style></head><body>
+<aside><h1>📍 김공주의 장소 지도</h1><p>공주대 지리학과 3학년 · 내가 사랑하는 공주의 장소 12곳</p>
+<div class="filters" id="filters"></div><ul id="list"></ul></aside>
+<div id="map"></div>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+const CAT={"학교·일상":"#143c7c","역사·문화":"#b0141a","자연·산책":"#1f8a4c","맛집·카페":"#e08a00"};
+const P=[
+["공주대학교 신관캠퍼스","학교·일상",36.4696,127.1416,"매일 오가는 곳. 지리학과 강의실이 있는 인문사회과학관"],
+["공주버스터미널","학교·일상",36.4718,127.1380,"집 갈 때 늘 들르는 곳"],
+["공산성","역사·문화",36.4651,127.1258,"백제 왕성. 야경이 제일 예쁜 곳"],
+["무령왕릉과 왕릉원","역사·문화",36.4610,127.1120,"고등학교 수학여행 때 처음 온 곳"],
+["국립공주박물관","역사·문화",36.4661,127.1093,"금동관 보러 세 번 감"],
+["공주한옥마을","역사·문화",36.4592,127.1168,"친구 오면 데려가는 곳"],
+["제민천","자연·산책",36.4562,127.1232,"저녁 산책 코스. 벚꽃 시즌 최고"],
+["금강신관공원","자연·산책",36.4665,127.1330,"자전거 타고 가는 곳"],
+["마곡사","자연·산책",36.5525,127.0110,"가을 단풍 보러 가는 절"],
+["미르섬","자연·산책",36.4640,127.1300,"가을 꽃축제"],
+["공주산성시장","맛집·카페",36.4575,127.1265,"밤빵과 수제비. 시장 구경"],
+["제민천 카페거리","맛집·카페",36.4555,127.1240,"과제하러 가는 카페들"]];
+const map=L.map('map').setView([36.463,127.125],13);
+L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap'}).addTo(map);
+const markers=[];
+P.forEach((p,i)=>{const m=L.circleMarker([p[2],p[3]],{radius:9,color:'#fff',weight:2,fillColor:CAT[p[1]],fillOpacity:.95}).addTo(map)
+ .bindPopup(`<b>${p[0]}</b><br><span style="color:${CAT[p[1]]}">${p[1]}</span><br>${p[4]}`);markers.push(m)});
+const list=document.getElementById('list');
+function render(cat){list.innerHTML='';P.forEach((p,i)=>{if(cat&&p[1]!==cat){markers[i].remove();return}markers[i].addTo(map);
+ const li=document.createElement('li');li.innerHTML=`<b><span class="dot" style="background:${CAT[p[1]]}"></span>${p[0]}</b><span>${p[4]}</span>`;
+ li.onclick=()=>{map.flyTo([p[2],p[3]],15);markers[i].openPopup()};list.appendChild(li)})}
+const f=document.getElementById('filters');const all=document.createElement('button');all.textContent='전체';all.className='on';all.onclick=()=>{[...f.children].forEach(b=>{b.classList.remove('on');b.style.background='';b.style.color=''});all.classList.add('on');render()};f.appendChild(all);
+Object.keys(CAT).forEach(c=>{const b=document.createElement('button');b.textContent=c;b.style.borderColor=CAT[c];b.onclick=()=>{[...f.children].forEach(x=>{x.classList.remove('on');x.style.background='';x.style.color=''});b.classList.add('on');b.style.background=CAT[c];b.style.color='#fff';render(c)};f.appendChild(b)});
+render();
+</script></body></html>
