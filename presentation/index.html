@@ -76,6 +76,23 @@ details.topic[open] .t-arrow{transform:rotate(90deg)}
 .year-h .rule{flex:1;height:1px;background:var(--line)}
 .year-h .n{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--muted)}
 
+/* 강의: 교과목 하위 그룹 */
+details.course{border:1px solid var(--line);border-radius:10px;margin-top:12px;background:#fff}
+details.course summary{list-style:none;cursor:pointer;padding:12px 16px;
+  display:flex;align-items:center;gap:10px;user-select:none;border-radius:10px}
+details.course summary::-webkit-details-marker{display:none}
+details.course summary:hover{background:#f7f9fb}
+.c-arrow{flex-shrink:0;width:18px;height:18px;border-radius:50%;background:var(--green-soft);
+  color:var(--green);display:inline-flex;align-items:center;justify-content:center;
+  font-size:9px;transition:transform .2s}
+details.course[open] .c-arrow{transform:rotate(90deg)}
+.c-title{font-size:15px;font-weight:700}
+.c-sub{font-size:12px;color:var(--muted);margin-top:1px}
+.c-count{margin-left:auto;flex-shrink:0;font-family:'IBM Plex Mono',monospace;font-size:11.5px;
+  color:var(--muted);background:#eef1f4;border-radius:999px;padding:2px 10px}
+.c-body{border-top:1px solid var(--line);padding:2px 12px 6px}
+.b-week{background:#eef1f4;color:var(--ink);font-family:'IBM Plex Mono',monospace;font-weight:500}
+
 /* 자료 행 */
 .item{display:block;width:100%;text-align:left;background:none;border:none;cursor:pointer;
   padding:16px 6px;border-bottom:1px solid var(--line);transition:.12s;
@@ -241,13 +258,17 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:26px 24px 4
    · 새 발표 추가: ITEMS 배열에 객체 하나 추가.
        cat  : CATEGORIES의 id (conference/lecture/special/project)
        date : 'YYYY.MM' — 연도별 하위 그룹 자동 생성
-       type : 'slide' 또는 'map'
+       type : 'slide' · 'map' · 'pdf'
+       course : (강의만) COURSES의 id — 교과목별 하위 그룹으로 묶임
+       week   : (강의만) 0 = OT, 1·2·3… = n주차 (배지 표시 · 같은 달 안 정렬 기준)
        url  : 링크를 base64 인코딩한 값 (브라우저 콘솔에서 btoa('https://…'))
      추가 직후엔 공개 상태 — 잠그려면 관리자 패널에서 비밀번호 설정.
    · 직접 URL 접근까지 막으려면 발표 페이지의 head 최상단에
        <script src="/presentation/gate.js" data-item="자료ID"><\/script>
      한 줄을 추가 (자료ID = ITEMS의 id). (실제 넣을 땐 \/ 를 / 로)
-   · 새 섹션(주제) 추가: CATEGORIES에 추가.
+   · 새 섹션(주제) 추가: CATEGORIES에 추가. group:'course' 를 주면 교과목별로 묶임.
+   · 새 교과목 추가: COURSES에 추가 (위에서부터 표시 순서). 학기가 바뀌면 sub만 고치거나
+     새 id(예: rural-2027-1)로 항목을 추가하면 됨.
    ============================================================ */
 
 const SALT = 'changminim/pa/v1|';
@@ -258,9 +279,18 @@ const SB_HEADERS = { apikey: SB_ANON, Authorization: 'Bearer ' + SB_ANON, 'Conte
 
 const CATEGORIES = [
   { id:'conference', name:'학회',          sub:'학술대회 · 학회 발표' },
-  { id:'lecture',    name:'강의',          sub:'정규 강의 자료' },
+  { id:'lecture',    name:'강의',          sub:'정규 강의 자료 · 교과목별', group:'course' },
   { id:'special',    name:'특강',          sub:'초청 강연 · 특강' },
   { id:'project',    name:'연구과제 · 워크숍', sub:'「소아비만 지역별 건강격차 해소를 위한 중재프로그램 개발 및 실증연구」 등 과제 발표' },
+];
+
+/* 강의 교과목 — 강의(lecture) 항목의 course 값과 연결. 배열 순서대로 표시 */
+const COURSES = [
+  { id:'rural',     name:'농촌계획 및 관리',     sub:'2026학년도 2학기 · 지리학과' },
+  { id:'urban',     name:'도시지리학',           sub:'2026학년도 2학기 · 지리학과' },
+  { id:'geoai-sc',  name:'GeoAI와 스마트도시',   sub:'2026학년도 2학기 · HUSS 디지털 경제 (광운대 공동개발)' },
+  { id:'capstone',  name:'지역개발캡스톤디자인', sub:'2026학년도 2학기 · 지리학과' },
+  { id:'geoai-sem', name:'GeoAI 이론 및 실습',   sub:'2026학년도 2학기 · 대학원' },
 ];
 
 const ITEMS = [
@@ -269,25 +299,30 @@ const ITEMS = [
     desc:'국제학술지 투고용 분석 발표 — 국민건강보험공단 영유아 건강검진(66–71개월, 229 시군구·2015–2023). OLS→GWR→MGWR→MGTWR 모형 적합 진행, 퀸 인접 공간자기상관, 변수별 작동 스케일(공간 bw·시간 τ), 로컬 계수 인터랙티브 지도, 코로나 전후 계수 변화. 데이터 정비(소아과·공원 KOSIS·식품 per-10k) 반영 클린판. 횡스크롤 14장.',
     url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9tZ3R3cl9wYXBlci5odG1s' },
 
-  { id:'geoai-seminar-ot-2026-09', cat:'lecture', date:'2026.09', type:'slide',
+  { id:'geoai-seminar-ot-2026-09', cat:'lecture', course:'geoai-sem', week:0, date:'2026.09', type:'slide',
     title:'GeoAI 이론 및 실습 — 오리엔테이션',
     desc:'2026학년도 2학기 대학원 「GeoAI 이론 및 실습」 1주차 오리엔테이션 (2026.9.7.) — 수업 소개·Goodchild 서문·교재와 편집자(Song Gao·Yingjie Hu·Wenwen Li)·15주 계획·운영과 평가·바이브코딩 현황·발표자 배정. 웹 슬라이드 22장 (← → 이동, N 발표자 노트, F 전체화면).',
     url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9nZW9haTA5MDcuaHRtbA==' },
 
-  { id:'rural-ot-2026-09', cat:'lecture', date:'2026.09', type:'pdf',
+  { id:'rural-w1-2026-09', cat:'lecture', course:'rural', week:1, date:'2026.09', type:'pdf',
+    title:'농촌계획 및 관리 — 1주차 · 리빙랩의 이해와 답사 준비',
+    desc:'2026학년도 2학기 「농촌계획 및 관리」 1주차 강의 (2026.9.8.) — 농촌의 생활과 리빙랩·리빙랩의 역사·참여와 공동창조·해외/국내 리빙랩 사례·우리 수업과 기록 도구·9월 15일 이인면 답사 준비·함께 읽고 볼 자료. 100쪽.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9ycDA5MDguaHRtbA==' },
+
+  { id:'rural-ot-2026-09', cat:'lecture', course:'rural', week:0, date:'2026.09', type:'pdf',
     title:'농촌계획 및 관리 — 오리엔테이션',
     desc:'2026학년도 2학기 「농촌계획 및 관리」 첫 주 강의 오리엔테이션 (2026.9.1.) — 강의 소개·운영 및 평가 안내. 17쪽.',
     url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9ycDA5MDEuaHRtbA==' },
 
-  { id:'geoai-ot-2026-09', cat:'lecture', date:'2026.09', type:'pdf',
+  { id:'geoai-ot-2026-09', cat:'lecture', course:'geoai-sc', week:0, date:'2026.09', type:'pdf',
     title:'GeoAI와 스마트도시 — 오리엔테이션',
     desc:'2026학년도 2학기 「GeoAI와 스마트도시」 1주차 강의 오리엔테이션 (2026.9.3.) — HUSS 디지털 경제 분야, 광운대 공동개발 교과. 15주 일정·평가·바이브 코딩 팀 프로젝트 안내. 18쪽.',
     url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9nczA5MDMuaHRtbA==' },
-  { id:'capstone-ot-2026-09', cat:'lecture', date:'2026.09', type:'pdf',
+  { id:'capstone-ot-2026-09', cat:'lecture', course:'capstone', week:0, date:'2026.09', type:'pdf',
     title:'지역개발캡스톤디자인 — 오리엔테이션',
     desc:'2026학년도 2학기 「지역개발캡스톤디자인」 1주차 오리엔테이션 (2026.9.3.) — 바이브 코딩으로 만드는 지도 웹서비스 캡스톤. 지난 학기 예시(베리어프리맵)·한 학기 흐름·RISE 지원사업·팀 구성 안내. 10쪽.',
     url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9jZDA5MDMuaHRtbA==' },
-  { id:'urban-ot-2026-09', cat:'lecture', date:'2026.09', type:'pdf',
+  { id:'urban-ot-2026-09', cat:'lecture', course:'urban', week:0, date:'2026.09', type:'pdf',
     title:'도시지리학 — 오리엔테이션',
     desc:'2026학년도 2학기 「도시지리학」 1주차 강의 오리엔테이션 (2026.9.7.) — 과목 소개·한 학기 흐름·주차별 계획·평가 방법·서울 도심 현장답사(11월 하루 9시간, 3주 대체) 안내. 7쪽.',
     url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC91ZzA5MDcuaHRtbA==' },
@@ -399,6 +434,14 @@ function render(){
 
     if (!items.length){
       body.innerHTML = '<div class="t-empty">아직 등록된 자료가 없습니다.</div>';
+    } else if (cat.group === 'course'){
+      /* 교과목별 하위 아코디언 — COURSES 순서대로, 자료가 있는 과목만 표시 */
+      COURSES.forEach(c => {
+        const ci = items.filter(it => it.course === c.id);
+        if (ci.length) body.appendChild(renderCourse(c, ci));
+      });
+      const etc = items.filter(it => !COURSES.some(c => c.id === it.course));
+      if (etc.length) body.appendChild(renderCourse({ id:'etc', name:'기타', sub:'교과목 미지정' }, etc));
     } else {
       const years = [...new Set(items.map(it => it.date.slice(0,4)))].sort((a,b) => b - a);
       years.forEach(y => {
@@ -417,9 +460,35 @@ function render(){
   if (isMaster()){ renderLockTable(); renderVault(); renderGhStatus(); }
 }
 
+const weekLabel = w => w === 0 ? 'OT' : `${w}주차`;
+
+/* 교과목 하위 그룹 — 최신 주차가 위 (날짜 내림차순 → 주차 내림차순) */
+function renderCourse(course, items){
+  const sorted = [...items].sort((a,b) =>
+    b.date.localeCompare(a.date) || ((b.week ?? -1) - (a.week ?? -1)));
+  const det = document.createElement('details');
+  det.className = 'course';
+  det.open = true;
+  det.innerHTML = `
+    <summary>
+      <span class="c-arrow">▶</span>
+      <span>
+        <div class="c-title">${esc(course.name)}</div>
+        ${course.sub ? `<div class="c-sub">${esc(course.sub)}</div>` : ''}
+      </span>
+      <span class="c-count">${sorted.length}건</span>
+    </summary>
+    <div class="c-body"></div>`;
+  const body = det.querySelector('.c-body');
+  sorted.forEach(it => body.appendChild(renderItem(it)));
+  return det;
+}
+
 function renderItem(it){
   const el = document.createElement('button');
   el.className = 'item';
+  const weekBadge = typeof it.week === 'number'
+    ? `<span class="badge b-week">${weekLabel(it.week)}</span>` : '';
   const typeBadge = it.type === 'map'
     ? '<span class="badge b-map">스토리맵</span>'
     : it.type === 'pdf'
@@ -428,7 +497,7 @@ function renderItem(it){
   const lockBadge = itemHash(it) ? '<span class="badge b-lock">🔒 비밀번호</span>' : '';
   el.innerHTML = `
     <div class="row1">
-      <h3>${esc(it.title)}</h3>
+      ${weekBadge}<h3>${esc(it.title)}</h3>
       ${typeBadge}${lockBadge}
       <span class="date">${it.date}</span>
     </div>
