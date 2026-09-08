@@ -37,7 +37,7 @@ const P=[
 ["미르섬","자연·산책",36.4640,127.1300,"가을 꽃축제"],
 ["공주산성시장","맛집·카페",36.4575,127.1265,"밤빵과 수제비. 시장 구경"],
 ["제민천 카페거리","맛집·카페",36.4555,127.1240,"과제하러 가는 카페들"]];
-const map=L.map('map').setView([36.463,127.125],13);
+const map=L.map('map');
 L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap'}).addTo(map);
 const markers=[];
 P.forEach((p,i)=>{const m=L.circleMarker([p[2],p[3]],{radius:9,color:'#fff',weight:2,fillColor:CAT[p[1]],fillOpacity:.95}).addTo(map)
@@ -48,5 +48,5 @@ function render(cat){list.innerHTML='';P.forEach((p,i)=>{if(cat&&p[1]!==cat){mar
  li.onclick=()=>{map.flyTo([p[2],p[3]],15);markers[i].openPopup()};list.appendChild(li)})}
 const f=document.getElementById('filters');const all=document.createElement('button');all.textContent='전체';all.className='on';all.onclick=()=>{[...f.children].forEach(b=>{b.classList.remove('on');b.style.background='';b.style.color=''});all.classList.add('on');render()};f.appendChild(all);
 Object.keys(CAT).forEach(c=>{const b=document.createElement('button');b.textContent=c;b.style.borderColor=CAT[c];b.onclick=()=>{[...f.children].forEach(x=>{x.classList.remove('on');x.style.background='';x.style.color=''});b.classList.add('on');b.style.background=CAT[c];b.style.color='#fff';render(c)};f.appendChild(b)});
-render();
+render();map.fitBounds(L.latLngBounds(P.map(p=>[p[2],p[3]])),{padding:[40,40]});
 </script></body></html>
