@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/presentation/gate.js" data-item="geoai-sc-w2-2026-09"></script>
+<title>GeoAI와 스마트도시 — 2주차 · GeoAI의 이해</title>
+<meta name="robots" content="noindex">
+<style>
+html,body{height:100%;margin:0;background:#1c2430}
+body{display:flex;flex-direction:column;height:100dvh}
+.bar{min-height:44px;box-sizing:border-box;display:flex;align-items:center;gap:12px;padding:10px 16px;flex-shrink:0;
+  background:#141a23;color:#e8ecf1;font-family:'Apple SD Gothic Neo','Malgun Gothic',sans-serif;font-size:13px}
+.bar a{color:#9fb4d8;text-decoration:none;white-space:nowrap}
+.bar a:hover{color:#fff}
+.bar a:focus-visible{outline:2px solid #9fb4d8;outline-offset:4px}
+.bar .t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.downloads{display:flex;gap:14px;flex-shrink:0}
+.downloads[hidden]{display:none}
+iframe{border:0;width:100%;flex:1;min-height:0;display:block}
+@media(max-width:640px){.bar{flex-wrap:wrap;gap:10px}.bar .t{order:3;flex-basis:100%}.downloads{margin-left:auto}}
+</style>
+</head>
+<body>
+<div class="bar">
+  <a href="/presentation/">← 아카이브</a>
+  <span class="t" title="GeoAI와 스마트도시 — 2주차 · GeoAI의 이해 · 2026학년도 2학기 · 103쪽">GeoAI와 스마트도시 — 2주차 · GeoAI의 이해 · 103쪽</span>
+  <nav class="downloads" aria-label="강의자료 다운로드" hidden>
+    <a data-file="L3ByZXNlbnRhdGlvbi9maWxlcy9nc193Ml8yMDI2MDkwOS5wZGY=" download="2주차_GeoAI의_이해_핵심단어강조판.pdf">PDF 다운로드</a>
+  </nav>
+</div>
+<iframe data-src="L3ByZXNlbnRhdGlvbi9maWxlcy9nc193Ml8yMDI2MDkwOS5wZGY=" title="GeoAI의 이해 강의자료 PDF"></iframe>
+<script>
+(function(){
+  function load(){
+    var f=document.querySelector('iframe');
+    if(!f.getAttribute('src')) f.src=atob(f.getAttribute('data-src'));
+    document.querySelectorAll('[data-file]').forEach(function(a){a.href=atob(a.getAttribute('data-file'));});
+    document.querySelector('.downloads').hidden=false;
+  }
+  if(window.PA_OPEN) load(); else document.addEventListener('pa:open',load,{once:true});
+})();
+</script>
+</body>
+</html>
