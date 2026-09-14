@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="/presentation/gate.js" data-item="rural-w2-2026-09"></script>
+<title>농촌계획 및 관리 — 2주차 · 이인면 현장답사</title>
+<meta name="description" content="2026년 9월 15일 이인면 현장답사: 브리핑 18쪽과 현장지도 3쪽.">
+<meta name="robots" content="noindex">
+<style>
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;background:#1c2430}
+body{display:flex;flex-direction:column;height:100dvh;color:#e8ecf1;font:13px/1.5 'Apple SD Gothic Neo','Malgun Gothic',sans-serif}
+.bar{display:flex;align-items:center;gap:16px;flex-shrink:0;padding:10px 16px;background:#141a23}
+a{color:#b9cbed;text-decoration:none}
+a:hover{color:#fff;text-decoration:underline}
+a:focus-visible{outline:2px solid #b9cbed;outline-offset:4px}
+.back{white-space:nowrap}
+h1{flex:1;min-width:0;margin:0;font-size:13px;font-weight:500}
+.date{color:#b0b8c4;white-space:nowrap}
+.toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:10px 16px;flex-shrink:0;border-bottom:1px solid #3c4655}
+.documents,.actions{display:flex;align-items:center;gap:10px}
+.documents a{padding:7px 12px;border:1px solid #526079;border-radius:6px;color:#dbe5f6;white-space:nowrap}
+.documents a[aria-current="page"]{background:#eaf0fa;color:#1d4189;border-color:#eaf0fa;font-weight:700}
+.actions a{white-space:nowrap}
+[hidden]{display:none!important}
+iframe{border:0;width:100%;flex:1;min-height:0;display:block;background:#525659}
+@media(max-width:640px){.bar{flex-wrap:wrap;gap:8px 16px}h1{order:3;flex-basis:100%}.date{margin-left:auto}.toolbar{flex-wrap:wrap;gap:12px}.actions{margin-left:auto}.documents{width:100%}.documents a{flex:1;text-align:center}}
+</style>
+</head>
+<body>
+<header class="bar">
+  <a class="back" href="/presentation/">← 아카이브</a>
+  <h1>농촌계획 및 관리 — 이인면 현장답사</h1>
+  <span class="date">2026.09.15</span>
+</header>
+<div class="toolbar" hidden>
+  <nav class="documents" aria-label="답사 자료 선택">
+    <a href="#briefing" data-document="briefing">브리핑 · 18쪽</a>
+    <a href="#map" data-document="map">현장지도 · 3쪽</a>
+  </nav>
+  <nav class="actions" aria-label="선택한 PDF 열기 및 다운로드">
+    <a id="open-pdf" target="_blank" rel="noopener">PDF 새 창 열기 ↗</a>
+    <a id="download-pdf" download>다운로드 ↓</a>
+  </nav>
+</div>
+<iframe title="이인면 현장답사 브리핑 PDF"></iframe>
+<script>
+(function(){
+  var documents={
+    briefing:{file:'/presentation/files/iin_briefing_20260915.pdf',name:'리빙랩_이인면_브리핑_260915_최종.pdf',title:'이인면 현장답사 브리핑 PDF'},
+    map:{file:'/presentation/files/iin_field_map_20260915.pdf',name:'이인면_현장지도_260915.pdf',title:'이인면 현장지도 PDF'}
+  };
+  function select(){
+    var key=location.hash==='#map'?'map':'briefing';
+    var doc=documents[key];
+    var frame=document.querySelector('iframe');
+    var preview=doc.file+'#view=FitH&navpanes=0';
+    if(frame.getAttribute('src')!==preview) frame.src=preview;
+    frame.title=doc.title;
+    document.querySelectorAll('[data-document]').forEach(function(a){
+      if(a.dataset.document===key) a.setAttribute('aria-current','page');
+      else a.removeAttribute('aria-current');
+    });
+    document.getElementById('open-pdf').href=doc.file;
+    var download=document.getElementById('download-pdf');
+    download.href=doc.file;
+    download.download=doc.name;
+  }
+  function load(){
+    select();
+    document.querySelector('.toolbar').hidden=false;
+    window.addEventListener('hashchange',select);
+  }
+  if(window.PA_OPEN) load(); else document.addEventListener('pa:open',load,{once:true});
+})();
+</script>
+</body>
+</html>
