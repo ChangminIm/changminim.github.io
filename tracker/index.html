@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123c43">
+  <title>아이걸음 · 환경 노출 예비 분석 | KNU-GeoAI Lab</title>
+  <meta name="description" content="소아비만 연구를 위한 아이걸음 시공간 분석 도구. 성인 1명의 시험 GPS를 이용한 이동·환경 노출·STKDE·3D 예비 분석 결과입니다.">
+  <link rel="canonical" href="https://changminim.com/tracker/">
+  <meta property="og:title" content="아이걸음 · 환경 노출 예비 분석">
+  <meta property="og:description" content="하루의 이동, 환경을 접한 시간, 선택 가능한 경로를 함께 읽는 시공간 분석 실험.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://changminim.com/tracker/">
+  <meta name="robots" content="noindex,follow">
+  <link rel="icon" type="image/png" href="/img/knu-logo.png">
+  <link rel="stylesheet" href="tracker.css">
+  <script src="tracker.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#analysis">분석 도구로 건너뛰기</a>
+  <header class="site-header"><a class="brand" href="/">KNU<span>·</span>GeoAI Lab</a><span class="header-note">국립공주대학교 지리학과</span><a class="home" href="/">연구실 홈페이지 ↗</a></header>
+  <main>
+    <section class="hero" aria-labelledby="title">
+      <div class="eyebrow"><span class="status-dot"></span>PRELIMINARY ANALYSIS <span class="edition">2026.09</span></div>
+      <div class="hero-grid"><div><h1 id="title">아이걸음<span>환경 노출 예비 분석</span></h1><p class="lead">어디에 있었는가에서,<br><strong>어떤 환경을 언제, 얼마나 접했는가로.</strong></p></div><div class="hero-aside"><span class="aside-index">01 / PILOT STUDY</span><p>소아비만 연구를 위한<br>시공간 분석 도구의 첫 실험.</p><p class="aside-small">연구자 1인의 시험 GPS로 이동·체류, 시설 인접, 시간 순서와 경로의 대안을 탐색합니다.</p><a class="primary-link" href="#analysis">분석 결과 살펴보기 <span>↓</span></a></div></div>
+      <div class="facts" aria-label="시험 자료의 범위"><div><strong>1<span>명</span></strong><p>성인 시험 참여자</p></div><div><strong>2<span>일</span></strong><p>실제 기록 · 9월 10–11일</p></div><div><strong>7,166<span>점</span></strong><p>원본 GPS 관측</p></div><div><strong>799.2<span>분</span></strong><p>정제 후 유효 관측</p></div></div>
+    </section>
+    <section class="research-note" aria-label="분석의 범위"><span class="note-title">예비 분석의 범위</span><p>현재 결과는 <strong>성인 1명의 시험 자료</strong>를 이용한 방법론·도구 점검입니다. 아동 집단의 연구 결과가 아니며, 시설 인접을 실제 이용·섭취·신체활동 또는 건강 효과로 해석하지 않습니다. 기록 공백과 가정한 일정은 관측 자료와 구분해 표시합니다.</p></section>
+    <section id="analysis" class="analysis" aria-labelledby="analysis-title">
+      <div class="section-heading"><div><span class="eyebrow dark">INTERACTIVE ATLAS</span><h2 id="analysis-title">직접 바꾸며 읽는 분석 결과</h2></div><a class="full-link" id="full-link" href="atlas.html?view=1&amp;tab=exposure" target="_blank" rel="noopener">분석 도구 넓게 열기 ↗</a></div>
+      <p class="section-copy">날짜·시간창·환경 반경을 바꿔 비교하세요. 아래 탐색 주제를 누르면 해당 분석 화면으로 이동합니다.</p>
+      <nav class="views" aria-label="분석 주제 바로가기">
+        <button type="button" data-view="exposure" aria-pressed="true"><span>01</span>환경 노출</button>
+        <button type="button" data-view="atlas" aria-pressed="false"><span>02</span>이동 지도</button>
+        <button type="button" data-view="space" aria-pressed="false"><span>03</span>3D 실험실</button>
+        <button type="button" data-view="stkde" aria-pressed="false"><span>04</span>STKDE</button>
+        <button type="button" data-view="research" aria-pressed="false"><span>05</span>연구 실험실</button>
+        <button type="button" data-view="methods" aria-pressed="false"><span>06</span>새 방법</button>
+        <button type="button" data-view="quality" aria-pressed="false"><span>07</span>자료 품질</button>
+      </nav>
+      <div class="frame-label"><span><i></i>시험 기록 · 공주·용인 · KST</span><span id="frame-status" role="status">환경 노출 화면</span></div>
+      <div class="atlas-frame"><iframe id="atlas" title="아이걸음 시공간 예비 분석 대시보드" src="atlas.html?view=1&amp;tab=exposure" loading="lazy" allow="fullscreen"></iframe></div>
+      <p class="frame-help">상세 표와 그림은 분석 도구의 메뉴에서 확인하고 저장할 수 있습니다. 좁은 화면에서는 ‘분석 도구 넓게 열기’를 이용하세요. 이 페이지는 저장된 시험 자료의 공개 스냅샷입니다.</p>
+      <noscript><p>분석 주제 전환에는 JavaScript가 필요합니다. <a href="atlas.html?view=1&amp;tab=exposure">분석 도구를 직접 여세요.</a></p></noscript>
+    </section>
+    <section class="reading" aria-labelledby="reading-title"><div class="section-heading"><div><span class="eyebrow dark">THREE WAYS IN</span><h2 id="reading-title">먼저 살펴볼 세 가지</h2></div></div><div class="reading-grid">
+      <article><span class="reading-num">01</span><h3>반경이 바꾸는 하루</h3><p>9월 10일 공원·운동시설 인접분은 50m에서 약 <strong>268.0분</strong>, 100m에서 약 <strong>427.7분</strong>입니다. ‘거리와 경계’에서 반경과 경계 안정화에 따른 변화를 확인하세요.</p><span class="trail">환경 노출 → 거리와 경계</span></article>
+      <article><span class="reading-num">02</span><h3>정말 같은 시간의 비교인가</h3><p>두 날짜의 유효 관측은 469.8분과 329.4분이지만, 두 날짜에 모두 관측된 KST 시각은 <strong>17.3분</strong>입니다. 공통 시각과 각 날짜 전체를 전환해 비교하세요.</p><span class="trail">환경 노출 → 같은 시각 비교</span></article>
+      <article><span class="reading-num">03</span><h3>같은 경로, 달라지는 계산</h3><p>공주 B→C의 r2 경로에서 식품 인접은 중점 근사로 약 <strong>2.00분</strong>, 도형 교차로 약 <strong>3.56분</strong>입니다. 기존 결과와 정밀 계산의 차이를 지도에서 확인하세요.</p><span class="trail">환경 노출 → 경로 정밀 비교</span></article>
+    </div></section>
+    <section class="methods-note"><h2>자료와 방법</h2><dl><div><dt>자료</dt><dd>2026.09.10–11 시험 GPS · OpenStreetMap 2026.09.11 스냅샷</dd></div><div><dt>해석</dt><dd>유효 관측분을 분모로 사용. 미관측은 인접 0으로 대체하지 않음.</dd></div><div><dt>방법</dt><dd>시간 가중 환경 조합 · STKDE · 시공간 궤적 · 환경 순서 · 가정 일정과 경로 비교</dd></div><div><dt>검증</dt><dd>환경 노출 추가 모듈의 계산 검증 1,719개 및 주요 화면 조작 확인. 현장 노출 타당성 검증과 구분.</dd></div></dl><a href="guide.md">환경 노출 사용 안내 내려받기 ↗</a></section>
+  </main>
+  <footer><a class="brand" href="/">KNU<span>·</span>GeoAI Lab</a><p>아이걸음 · 소아비만 연구의 지리학 파트<br>예비 분석 공개 · 2026.09.14</p><a href="/">연구실로 돌아가기 ↗</a></footer>
+</body>
+</html>
