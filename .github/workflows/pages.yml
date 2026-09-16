@@ -1,0 +1,49 @@
+name: Deploy website to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check out published website
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Prepare tracked website files
+        shell: bash
+        run: |
+          mkdir -p "$RUNNER_TEMP/published-site"
+          git archive --format=tar HEAD -o "$RUNNER_TEMP/published-site.tar"
+          tar -xf "$RUNNER_TEMP/published-site.tar" -C "$RUNNER_TEMP/published-site"
+          test -s "$RUNNER_TEMP/published-site/index.html"
+          test -s "$RUNNER_TEMP/published-site/tracker_analysis/index.html"
+          test -s "$RUNNER_TEMP/published-site/tracker_analysis/report.enc"
+          test "$(cat "$RUNNER_TEMP/published-site/CNAME")" = "changminim.com"
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: ${{ runner.temp }}/published-site
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
