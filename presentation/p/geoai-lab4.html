@@ -102,16 +102,16 @@ border:1px solid var(--green);border-radius:20px;padding:2px 10px;margin-bottom:
 <div id="bar"></div><button class="nav l" type="button" aria-label="이전">‹</button><button class="nav r" type="button" aria-label="다음">›</button><div id="track"><section class="panel cover"><div class="inner"><span class="logo"></span>
 <p class="eyebrow" style="color:#6EDB95">GeoAI 이론 및 실습 · 5주차 실습</p>
 <h1>따릉이 이동을<br>벡터로 표현하기</h1>
-<p class="sub">서울 공공자전거 2026년 5월 4,008,345건 · 점(대여소) 표현 → 선(경로) 표현 → 다운스트림</p>
+<p class="sub">서울 공공자전거 2026년 5월 4,008,345건 · 점(대여소) 표현 → 선(GPS 궤적) 표현</p>
 <div class="meta"><div><b>교재</b>Ch.6 공간 표현학습</div>
 <div><b>자료</b>서울 공공자전거 대여이력 · 대여소 정보 (서울열린데이터광장)</div>
 <div><b>제출물</b>없음 · 수업 중 실습</div></div></div></section>
 <section class="panel "><div class="inner"><p class="eyebrow">실습 순서</p><h2>구성</h2>
-<p class="lead">교재 6.3의 순서를 따른다. 점 자료(대여소)를 벡터로 바꾸고, 다음으로 선 자료(경로)를 벡터로 바꾼 뒤, 그 벡터가 예측에 쓸모 있는지 확인한다.</p>
+<p class="lead">교재 6.3의 순서를 따른다. 점 자료(대여소)를 벡터로 바꾸고, 다음으로 선 자료(GPS 궤적)를 벡터로 바꿔 그 벡터로 이동 수단을 맞혀 본다.</p>
 <div class="grid3">
 <div class="card"><h3>1부 · 점 표현</h3><ul><li>수작업 특징: 24시간 프로파일</li><li>학습 표현: 대여–반납 공출현 임베딩</li><li>유사 대여소 질의</li></ul></div>
 <div class="card"><h3>2부 · 선 표현 (GeoLife GPS 궤적)</h3><ul><li>수작업 특징 10개 vs GRU 폴리라인 인코더</li><li>이동 수단 분류 비교</li><li>유사 궤적 검색과 벡터의 쓰임</li></ul></div>
-<div class="card"><h3>정리</h3><ul><li>분석 과정의 선택 확인</li><li>점·선 표현의 공통 구조</li></ul></div></div>
+<div class="card"><h3>정리</h3><ul><li>점·선 표현의 공통 구조</li><li>심화 과제</li></ul></div></div>
 <div class="box info"><span class="lab">자료의 성격</span>
 <p>따릉이는 한 행이 대여 한 건이며 대여·반납 대여소와 시각, 이용시간, 이용거리만 있다. 중간 경로(GPS 궤적)는 없다. 그래서 1부(점)는 따릉이로, 2부(선)는 GPS 궤적이 있는 GeoLife로 한다.</p></div>
 <div class="box warn"><span class="lab">실습지 수치와 수업 결과의 차이</span>
@@ -119,7 +119,7 @@ border:1px solid var(--green);border-radius:20px;padding:2px 10px;margin-bottom:
 <section class="panel "><div class="inner"><p class="eyebrow">준비</p><h2>실행 환경과 자료</h2>
 <ol class="steps">
 <li>배포된 <code>실습4_자료.zip</code>을 풀고 그 폴더에서 터미널을 열어 <code>claude</code>를 실행한다</li>
-<li><code>pip install osmnx scikit-learn torch</code> — 설치되어 있으면 건너뛴다</li>
+<li><code>pip install scikit-learn torch</code> — 설치되어 있으면 건너뛴다</li>
 <li>원자료(한 달 700 MB)는 수업에서 내려받지 않는다. 실습지 수치를 그대로 재현하려면 부록의 방법으로 원자료를 받아 같은 입력문을 쓴다</li></ol>
 <div class="grid2">
 <div class="card"><h3>배포 자료</h3><ul>
@@ -215,7 +215,7 @@ border:1px solid var(--green);border-radius:20px;padding:2px 10px;margin-bottom:
 <div class="box ok"><span class="lab">해석</span><ul>
 <li>0.1 km 옆의 홍대입구역 8번출구 앞(유사도 0.86)보다 0.8~1.3 km 떨어진 연남동·성산 쪽 대여소가 벡터로는 더 가깝다. 이 대여소는 "연남동 방향으로 가는 사람이 빌리는 곳"이라는 성격을 가지며, 좌표로는 얻을 수 없는 정보이다</li>
 <li>여의나루역 1번출구 앞에서는 두 목록이 거의 같다 (여의도 공작아파트 · LG트윈타워 앞 · 여의도고교 앞 등 모두 0.7 km 안). 좌표 군집과의 비교에서 보았듯 대여소의 약 9할은 임베딩과 좌표가 같은 답을 낸다</li>
-<li>임베딩은 좌표의 대체가 아니라 추가 정보이다. 어느 쪽이 더 쓸모 있는지는 과제에 따라 다르며, 뒤의 다운스트림에서 확인한다</li></ul></div>
+<li>임베딩은 좌표의 대체가 아니라 추가 정보이다. 어느 쪽이 더 쓸모 있는지는 과제에 따라 다르다</li></ul></div>
 <div class="box info"><span class="lab">여기까지가 점, 다음부터 선</span>
 <p>1부에서는 대여소(점) 하나를 벡터 하나로 바꿨다. 2부에서는 경로(선)를 벡터로 바꾼다. 점은 번호 하나에 벡터 하나면 되지만, 선은 점이 여러 개 이어진 순서열이라 길이가 제각각이다. 그래서 순서열을 읽어 요약하는 장치가 따로 필요하다.</p></div></div></section>
 <section class="panel "><div class="inner"><p class="eyebrow">2부 · 선 표현 — 5 · 궤적 자료</p><h2>선을 벡터로 — 자료를 바꾼다</h2>
@@ -286,13 +286,6 @@ border:1px solid var(--green);border-radius:20px;padding:2px 10px;margin-bottom:
 <li>통행 유형화 — 벡터 군집으로 출퇴근형·배회형·관광형 구분</li>
 <li>이상 궤적 탐지 — 평소 벡터와 먼 궤적(우회·배회·항로 이탈)</li>
 <li>다음 위치 예측, 노출 추정 등 다른 모형의 입력 변수</li></ul></div></div></div></section>
-<section class="panel "><div class="inner"><p class="eyebrow">10 · 분석 과정의 선택</p><h2>명시되지 않은 선택의 확인</h2>
-<div class="grid3">
-<div class="card"><h3>점 표현</h3><ul><li>300건 기준으로 대여소를 거른 것</li><li>임베딩 차원 16, 부정 표본 5개</li><li>군집 수 4</li></ul></div>
-<div class="card"><h3>선 표현</h3><ul><li>조각당 64점 재표본</li><li>모드 통합(승용차+택시, 전철+지하철)</li><li>모드별 최대 1,500개로 균형</li></ul></div>
-<div class="card"><h3>평가</h3><ul><li>사용자 단위 분할</li><li>수작업 특징 10개의 선택</li><li>정확도와 macro F1</li></ul></div></div>
-<div class="box warn"><span class="lab">우선 확인 항목</span>
-<p>교차검증이 사용자 단위로 나뉘었는지 확인한다. 같은 사람의 궤적이 학습과 검증에 함께 들어가면 정확도가 부풀려진다.</p></div></div></section>
 <section class="panel "><div class="inner"><p class="eyebrow">정리</p><h2>요약</h2>
 <ol class="steps">
 <li>표현학습은 과제를 풀며 벡터를 만든다. 열의 뜻은 사후에 해석한다</li>
@@ -303,7 +296,7 @@ border:1px solid var(--green);border-radius:20px;padding:2px 10px;margin-bottom:
 </ol>
 <div class="grid2">
 <div class="card"><h3>심화 과제 (선택, 제출 없음)</h3><ul>
-<li>좌표 기반 위치 인코더(사인·코사인 펼침)를 만들어 이동 기반 임베딩과 다운스트림 성능 비교</li>
+<li>좌표 기반 위치 인코더(사인·코사인 펼침)를 만들어 이동 기반 임베딩과 군집 결과 비교</li>
 <li>한 사람의 하루 연속 이동을 "문장"으로 삼아 임베딩을 다시 학습</li></ul></div>
 <div class="card"><h3>다음 주</h3><ul><li>원서 Ch.7</li></ul></div></div></div></section>
 <section class="panel "><div class="inner"><p class="eyebrow">부록 · 문제 해결</p><h2>상황별 확인 문장</h2>
@@ -316,8 +309,7 @@ border:1px solid var(--green);border-radius:20px;padding:2px 10px;margin-bottom:
 <ul><li>"700 MB CSV라 느려. 필요한 열만 읽고 20만 행 표본으로 먼저 해줘."</li>
 <li>"GRU 학습이 느려. 에폭을 10으로 줄이고 3겹으로 먼저 확인해줘."</li></ul></div>
 <div class="card"><h3>결과 점검</h3>
-<ul><li>"다운스트림 입력에 이용거리가 들어갔는지 확인해줘."</li>
-<li>"교차검증이 사용자 단위로 나뉘었는지 확인해줘."</li></ul></div>
+<ul><li>"교차검증이 사용자 단위로 나뉘었는지 확인해줘."</li></ul></div>
 <div class="card"><h3>개념 확인</h3>
 <ul><li>"폴리라인 인코더가 좌표 대신 이동량·속도를 입력으로 받는 이유를 설명해줘."</li>
 <li>"위치 인코더가 좌표 두 개를 그대로 쓰는 것보다 나은 이유를 설명해줘."</li></ul></div></div></div></section></div><div id="pn"></div><div id="hint">← → 방향키 · 스크롤 · 스와이프로 이동</div>
