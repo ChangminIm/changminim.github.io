@@ -32,11 +32,13 @@
     ml: { label: '다수준모형', parent: 'esf' },
     pat: { label: '패턴·군집', parent: 'stat' },
     gwr: { label: 'GW모형', parent: 'stat' },
+    pan: { label: '공간패널', parent: 'stat' },
     ai: { label: 'GeoAI', parent: null },
     coh: { label: '코호트·통계', parent: null },
   };
   const M_ANC = mk => { const out = []; let p = METHODS[mk].parent; while (p) { out.push(p); p = METHODS[p].parent; } return out; };
   const TAGS = [
+    { k: '10.25202/JAKG.15.3.7', s: ['dep'], m: ['pan', 'gwr'] },
     { k: 'GeoAI-driven', s: ['dep'], m: ['ai'] },
     { k: 'commuting', s: ['covid'], m: ['pat'] },
     { k: '10.1016/j.apgeog.2024.103470', s: ['drug'], m: ['ai'] },
