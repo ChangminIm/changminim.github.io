@@ -105,6 +105,9 @@ border-left:3px solid var(--green);background:#F2F8F4;border-radius:0 8px 8px 0}
 .panel figure img[alt^="관측소 135곳을 숨기고"]{max-height:28vh}
 .panel figure figcaption{text-align:center}
 td.best{font-weight:800;color:var(--green)}
+.dl{display:inline-block;margin:4px 0 12px;padding:10px 18px;border-radius:8px;background:var(--navy);color:#fff;font-weight:700;text-decoration:none}
+.dl:hover{opacity:.88}
+
 .key{margin:16px 0 2px;font-size:18px;font-weight:700;color:var(--navy);line-height:1.5}
 .key span{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.06em;color:#fff;background:var(--green);border-radius:4px;padding:2px 8px;margin-right:10px;vertical-align:2px}
 </style>
@@ -126,6 +129,7 @@ td.best{font-weight:800;color:var(--green)}
 <div class="box ok"><span class="lab">모든 학생이 같은 값</span><p>난수가 들어가는 분할·학습은 배포 파일 <code>srgcnn_lab.py</code>의 함수로 고정함. 입력문대로 하면 이 실습지의 숫자가 소수 셋째 자리까지 같게 나와야 함.</p></div>
 <p class="key"><span>요점</span>이 자료에서는 GWR이 가장 정확했고, 논문 그대로의 SRGCNN은 OLS보다 못했음. 원인은 이웃과 평균되며 내 숙소의 특성이 흐려지는 것</p></div></section>
 <section class="panel "><div class="inner"><p class="eyebrow">준비</p><h2>실행 환경과 배포 자료</h2>
+<a class="dl" href="https://changminim.com/presentation/files/geoai-lab5b-data.zip" download>실습 자료 내려받기 (zip, 1.1 MB)</a>
 <ol class="steps">
 <li><code>실습5-2_실습자료.zip</code>을 풀고 그 폴더에서 터미널을 열어 <code>claude</code> 실행</li>
 <li><code>pip install geopandas libpysal esda spreg mgwr torch scikit-learn</code> (이미 있으면 생략)</li>
