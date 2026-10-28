@@ -96,6 +96,7 @@ body{
 .imp-row.geo .bar{background:var(--accent-strong)}
 .imp-row.geo .n{color:var(--accent-strong);opacity:1;font-weight:650}
 .imp-wrap .p-note{font-size:.8rem;color:var(--panel-ink);opacity:.55;margin-top:20px;line-height:1.6}
+.imp-wrap .p-note a{color:inherit;text-decoration:underline;text-underline-offset:2px}
 
 /* map tooltip */
 .tip{position:fixed;z-index:40;pointer-events:none;opacity:0;

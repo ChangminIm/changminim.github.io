@@ -1,6 +1,7 @@
 /* 논문 목록 데이터 — 새 논문은 맨 위에 한 항목만 추가하면 됨.
    필드: y(연도), a(저자, 본인은 **Im C**), t(제목), j(저널·권호), doi(없으면 생략), review(심사중이면 true) */
 window.LAB_PUBS = [
+  { y: 2026, a: "**Im C**, Lee J, Kim Y.", t: "Spatiotemporal analysis of urban environmental factors associated with depressive symptoms in the Seoul Metropolitan Area using explainable GeoAI: focusing on the pre- and post-COVID-19 comparison.", j: "The Geographical Journal of Korea, 60(3), 305-324", doi: "10.22905/kaopqj.2026.60.3.9" },
   { y: 2026, a: "Lee J, **Im C**, Kim Y.", t: "Changes in the spatial patterns of depressive symptoms before, during, and after the COVID-19 pandemic in Korea: evidence from spatial panel models and multiscale geographically weighted regression.", j: "J. Association of Korean Geographers, 15(3), 477-497", doi: "10.25202/JAKG.15.3.7" },
   { y: 2025, a: "**Im C**, Kim Y.", t: "GeoAI-driven spatial analysis of urban environmental factors and their impact on mental health.", j: "Applied Geography", review: true },
   { y: 2025, a: "**Im C**, Kim Y.", t: "Daily commuting population and corresponding spread of infectious disease.", j: "SSM - Population Health", review: true },

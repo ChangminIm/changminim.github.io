@@ -38,6 +38,7 @@
   };
   const M_ANC = mk => { const out = []; let p = METHODS[mk].parent; while (p) { out.push(p); p = METHODS[p].parent; } return out; };
   const TAGS = [
+    { k: '10.22905/kaopqj.2026.60.3.9', s: ['dep', 'covid'], m: ['ai', 'pat'] },
     { k: '10.25202/JAKG.15.3.7', s: ['dep'], m: ['pan', 'gwr'] },
     { k: 'GeoAI-driven', s: ['dep'], m: ['ai'] },
     { k: 'commuting', s: ['covid'], m: ['pat'] },
