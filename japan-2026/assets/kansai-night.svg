@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="650" viewBox="0 0 1600 650" role="img" aria-labelledby="title desc">
+  <title id="title">오사카에서 교토, 겨울 저녁의 여행</title>
+  <desc id="desc">푸른 겨울 하늘 아래 도톤보리 운하의 불빛이 교토의 탑과 산속 온천으로 이어지는 일러스트.</desc>
+  <defs>
+    <linearGradient id="sky" x2="0" y2="1"><stop stop-color="#101d35"/><stop offset=".48" stop-color="#293750"/><stop offset=".84" stop-color="#aa7f83"/><stop offset="1" stop-color="#dbad98"/></linearGradient>
+    <linearGradient id="water" x2=".18" y2="1"><stop stop-color="#496778"/><stop offset=".45" stop-color="#273d54"/><stop offset="1" stop-color="#101e31"/></linearGradient>
+    <linearGradient id="mist" x2="0" y2="1"><stop stop-color="#dcc1ab" stop-opacity=".17"/><stop offset="1" stop-color="#dcc1ab" stop-opacity="0"/></linearGradient>
+    <linearGradient id="window" x2="0" y2="1"><stop stop-color="#ffc987"/><stop offset="1" stop-color="#eaa66d"/></linearGradient>
+    <linearGradient id="bank" x2="0" y2="1"><stop stop-color="#394451"/><stop offset="1" stop-color="#152436"/></linearGradient>
+    <linearGradient id="shadow" x2="0" y2="1"><stop stop-color="#0c192c" stop-opacity="0"/><stop offset="1" stop-color="#0b1728" stop-opacity=".62"/></linearGradient>
+    <pattern id="cityWindows" width="17" height="24" patternUnits="userSpaceOnUse"><rect x="5" y="6" width="5" height="9" rx=".7" fill="#e9c499" opacity=".55"/></pattern>
+    <pattern id="cityWindowsCool" width="19" height="24" patternUnits="userSpaceOnUse"><rect x="6" y="6" width="7" height="9" rx=".7" fill="#adc4c9" opacity=".36"/></pattern>
+    <pattern id="smallWindows" width="12" height="18" patternUnits="userSpaceOnUse"><rect x="3" y="5" width="4" height="6" fill="#eac99c" opacity=".38"/></pattern>
+    <pattern id="shoji" width="22" height="32" patternUnits="userSpaceOnUse"><rect width="22" height="32" fill="url(#window)"/><path d="M0 0H22V32H0ZM11 0V32M0 16H22" fill="none" stroke="#665244" stroke-width="2"/></pattern>
+    <filter id="glow" x="-100%" y="-100%" width="300%" height="300%"><feGaussianBlur stdDeviation="3"/></filter>
+    <g id="pine"><path d="M0 0L-15 29H-9L-24 50H-13L-31 77H-4V94H4V77H31L13 50H24L9 29H15Z" fill="#213346"/></g>
+    <g id="person"><circle cy="-15" r="3" fill="#edc0a0"/><path d="M-4-10Q0-13 4-10L5 0H-5Z" fill="#b87667"/><path d="M-2 0L-2 7M2 0L3 7" stroke="#182c40" stroke-width="2"/></g>
+    <g id="lamp"><path d="M0 0V53" stroke="#253748" stroke-width="3"/><path d="M-7 0Q0-5 7 0L5 12H-5Z" fill="#f6c997"/><path d="M-8 0H8" stroke="#3d4550" stroke-width="2"/><circle cy="6" r="13" fill="#ffd69e" opacity=".15" filter="url(#glow)"/></g>
+  </defs>
+
+  <!-- An open dusk sky leaves room for the title. -->
+  <path fill="url(#sky)" d="M0 0H1600V650H0Z"/>
+  <g fill="#d8dce0">
+    <circle cx="55" cy="81" r="1" opacity=".35"/><circle cx="725" cy="60" r="1.2" opacity=".45"/><circle cx="912" cy="126" r=".9" opacity=".44"/><circle cx="1050" cy="45" r="1" opacity=".5"/><circle cx="1167" cy="174" r="1.1" opacity=".35"/><circle cx="1354" cy="58" r="1.1" opacity=".44"/><circle cx="1454" cy="152" r="1" opacity=".55"/><circle cx="1528" cy="76" r="1.3" opacity=".3"/><circle cx="683" cy="176" r=".8" opacity=".35"/><circle cx="806" cy="103" r=".8" opacity=".4"/>
+  </g>
+  <circle cx="1244" cy="103" r="32" fill="#f6e4be" opacity=".1" filter="url(#glow)"/>
+  <circle cx="1244" cy="103" r="22" fill="#f5dfb7"/>
+  <circle cx="1252" cy="97" r="21" fill="#29354d"/>
+  <g fill="none" stroke="#a6a0a7" stroke-linecap="round" opacity=".16">
+    <path d="M780 214Q886 190 1015 209" stroke-width="4"/><path d="M1077 225Q1222 201 1367 215" stroke-width="3"/><path d="M1350 264Q1460 246 1600 252" stroke-width="5"/><path d="M473 276Q595 256 723 272" stroke-width="3"/>
+  </g>
+
+  <!-- The mountains soften the transition from city to Kyoto. -->
+  <path d="M0 390L82 363 159 376 247 337 346 371 438 335 537 368 623 328 732 359 842 300 929 329 1048 248 1122 292 1215 236 1331 299 1437 217 1530 273 1600 245V518H0Z" fill="#69717d" opacity=".56"/>
+  <path d="M667 405L789 345 875 375 983 304 1056 348 1173 290 1253 335 1341 283 1436 342 1527 291 1600 330V537H667Z" fill="#4b5c6b"/>
+  <path d="M895 446L988 379 1072 402 1188 334 1290 388 1375 352 1483 387 1600 336V560H895Z" fill="#364b5b"/>
+  <path d="M984 304L1010 321 1033 318 1056 348 1011 335Z M1215 236L1186 266 1217 254 1255 267Z M1437 217L1407 246 1438 235 1468 242Z" fill="#c0bec0" opacity=".3"/>
+  <path d="M0 390H1600V520H0Z" fill="url(#mist)"/>
+
+  <!-- Osaka's distant layered skyline. -->
+  <g fill="#424b5b">
+    <path d="M0 390V325H38V310H54V390Z M66 390V340H114V302H127V390Z M136 390V276H185V390Z M196 390V318H228V306H239V390Z M258 390V340H304V390Z M313 390V298H341V390Z M353 390V324H377V311H400V390Z M418 390V349H453V322H476V390Z M491 390V305H523V288H537V390Z M552 390V330H590V390Z M603 390V311H637V390Z M646 390V349H686V390Z M702 390V326H752V390Z M769 390V339H802V315H825V390Z M836 390V348H870V390Z M885 390V336H922V390Z"/>
+  </g>
+  <g fill="url(#smallWindows)">
+    <path d="M142 289H178V390H142Z M265 348H299V390H265Z M318 309H336V390H318Z M359 335H391V390H359Z M497 319H531V390H497Z M559 340H584V390H559Z M611 326H632V390H611Z M710 339H746V390H710Z M777 352H817V390H777Z"/>
+  </g>
+  <g fill="none" stroke="#edb28f" opacity=".42">
+    <circle cx="704" cy="320" r="54" stroke-width="2"/><circle cx="704" cy="320" r="43" stroke-width=".7"/>
+    <path d="M704 266V374M650 320H758M666 282L742 358M742 282L666 358M704 320L681 397M704 320L727 397"/>
+  </g>
+  <g fill="#e4ae86" opacity=".8"><circle cx="704" cy="266" r="3"/><circle cx="742" cy="282" r="3"/><circle cx="758" cy="320" r="3"/><circle cx="742" cy="358" r="3"/><circle cx="666" cy="358" r="3"/><circle cx="650" cy="320" r="3"/><circle cx="666" cy="282" r="3"/></g>
+
+  <!-- A ribbon of water gives the scene a single shared foreground. -->
+  <path d="M569 417L813 417 1152 650H136Z" fill="url(#water)"/>
+  <path d="M0 432L569 417 136 650H0Z" fill="url(#bank)"/>
+  <path d="M813 417L1600 434V650H1152Z" fill="#26394a"/>
+  <path d="M0 473L497 457 167 637H0Z" fill="#41515c"/>
+  <path d="M866 453L1600 484V546L976 520Z" fill="#48515a"/>
+
+  <!-- Street buildings: staggered facades, quiet signs, warm interiors. -->
+  <g>
+    <path d="M-22 285H65V466H-22Z" fill="#314357"/><path d="M-22 285H65V295H-22Z" fill="#4b5a69"/>
+    <path d="M-10 309H54V432H-10Z" fill="url(#cityWindowsCool)"/>
+    <path d="M69 323H148V468H69Z" fill="#675b60"/><path d="M75 335H139V417H75Z" fill="url(#cityWindows)"/>
+    <path d="M78 435H99V464H78Z M107 435H138V464H107Z" fill="#dda379"/><path d="M70 429H149L144 438H68Z" fill="#9d665d"/>
+    <path d="M152 273H249V467H152Z" fill="#38495d"/><path d="M164 286H237V408H164Z" fill="url(#cityWindowsCool)"/>
+    <path d="M165 418H237V458H165Z" fill="#172a40"/><path d="M169 423H233V449H169Z" fill="#c58f73"/>
+    <path d="M256 323H334V460H256Z" fill="#86736d"/><path d="M267 335H324V409H267Z" fill="url(#cityWindows)"/>
+    <path d="M265 420H326V453H265Z" fill="#e4bc85"/><path d="M277 420V453M295 420V453M313 420V453" stroke="#695d54" stroke-width="3"/>
+    <path d="M342 301H413V451H342Z" fill="#4a5361"/><path d="M352 312H404V403H352Z" fill="url(#cityWindowsCool)"/>
+    <path d="M345 417H412L407 426H342Z" fill="#c2816a"/><path d="M350 428H402V449H350Z" fill="#d8b088"/>
+    <path d="M420 340H474V447H420Z" fill="#70626a"/><path d="M429 350H465V414H429Z" fill="url(#cityWindows)"/>
+    <path d="M482 350H531V433H482Z" fill="#58616c"/><path d="M489 359H524V418H489Z" fill="url(#cityWindowsCool)"/>
+    <path d="M538 370H568V423H538Z" fill="#716c71"/><path d="M542 378H563V411H542Z" fill="url(#smallWindows)"/>
+  </g>
+  <g stroke="#85909b" stroke-width="1.5" opacity=".45"><path d="M-5 278V285M56 278V285M-5 279H56M165 265V273M236 265V273M165 266H236M352 292H404M352 292V301M404 292V301"/></g>
+  <g>
+    <rect x="41" y="330" width="20" height="93" rx="2" fill="#dc7768"/><path d="M48 340H54M47 351H55M48 362H54M46 373H56M48 384H54M47 395H55M48 406H54" stroke="#ffe0b3" stroke-width="3"/>
+    <rect x="131" y="364" width="17" height="73" rx="2" fill="#748da0"/><path d="M136 373H143M137 384H142M136 395H143M137 406H142M136 417H143" stroke="#dce8df" stroke-width="2.5"/>
+    <rect x="217" y="312" width="27" height="91" rx="2" fill="#b46764"/><rect x="221" y="316" width="19" height="83" rx="1" fill="none" stroke="#e9bc95"/>
+    <path d="M225 329H235M226 340H234M224 351H236M226 363H234M224 375H236M226 387H234" stroke="#f5d4a8" stroke-width="3"/>
+    <rect x="325" y="357" width="16" height="73" rx="2" fill="#d4bd8e"/><path d="M330 369H337M330 380H336M331 391H337M330 402H336M331 413H337" stroke="#7c655f" stroke-width="2.5"/>
+    <rect x="405" y="370" width="17" height="60" rx="2" fill="#598794"/><path d="M410 380H417M411 391H416M410 402H417M411 413H416" stroke="#dce7cf" stroke-width="2.5"/>
+    <path d="M156 411H247" stroke="#d9a37e" stroke-width="3"/><path d="M264 414H333" stroke="#deb590" stroke-width="2"/>
+  </g>
+  <g fill="none" stroke="#283b4d" stroke-width="1.5"><path d="M0 332Q103 352 200 326T394 345L501 367"/><path d="M8 389Q141 407 274 385T478 391"/></g>
+  <g fill="#f3bd88"><circle cx="85" cy="343" r="2"/><circle cx="117" cy="342" r="2"/><circle cx="149" cy="336" r="2"/><circle cx="282" cy="333" r="2"/><circle cx="314" cy="336" r="2"/><circle cx="346" cy="342" r="2"/></g>
+
+  <!-- The opposite bank. -->
+  <path d="M770 370H805V424H770Z" fill="#676271"/><path d="M810 347H854V433H810Z" fill="#535d6c"/><path d="M816 356H847V420H816Z" fill="url(#smallWindows)"/>
+  <path d="M860 314H913V443H860Z" fill="#526071"/><path d="M869 325H904V419H869Z" fill="url(#cityWindows)"/>
+  <path d="M919 344H974V452H919Z" fill="#766b6c"/><path d="M928 353H967V425H928Z" fill="url(#cityWindowsCool)"/>
+  <path d="M979 369H1027V463H979Z" fill="#5d5963"/><path d="M985 379H1020V440H985Z" fill="url(#smallWindows)"/>
+  <rect x="900" y="362" width="15" height="68" rx="1" fill="#d79576"/><path d="M905 371H910M904 382H911M905 393H910M904 404H911M905 415H910" stroke="#f7d7a5" stroke-width="2"/>
+  <path d="M870 430H907V441H870Z M927 437H968V449H927Z M987 449H1021V460H987Z" fill="#e4b68a"/>
+
+  <!-- The central bridge, walkway, and their little pools of light. -->
+  <path d="M473 459Q673 438 874 459L890 477Q674 457 450 477Z" fill="#beaaa0"/>
+  <path d="M450 477Q674 457 890 477V490Q673 474 450 490Z" fill="#3a4654"/>
+  <path d="M473 459V447Q674 427 874 447V459M473 451Q674 431 874 451" fill="none" stroke="#25394b" stroke-width="3"/>
+  <path d="M494 445V457M519 442V454M546 440V452M574 438V450M604 436V448M636 435V447M669 435V447M702 435V447M736 436V448M768 438V450M799 440V452M828 442V454M853 445V457" stroke="#344554" stroke-width="2"/>
+  <path d="M483 478V515L493 509V478M849 478V508L859 516V479" fill="#374758"/>
+  <use href="#person" transform="translate(574 454) scale(.7)"/><use href="#person" transform="translate(591 452) scale(.65)"/><use href="#person" transform="translate(757 454) scale(.7)"/>
+  <g fill="none" stroke="#d4ba94" stroke-width="2" opacity=".75"><path d="M15 491L492 462M38 515L450 480M895 476L1580 513"/></g>
+  <g stroke="#78838a" stroke-width="2"><path d="M28 491V507M90 487V501M149 483V495M208 479V489M268 476V485M324 472V482M379 469V479M431 466V476M941 479V492M1020 484V498M1103 489V503M1191 494V508M1283 499V514M1381 504V519M1483 509V524"/></g>
+  <use href="#lamp" transform="translate(93 433) scale(.95)"/><use href="#lamp" transform="translate(286 426) scale(.83)"/><use href="#lamp" transform="translate(435 419) scale(.75)"/><use href="#lamp" transform="translate(958 428) scale(.87)"/><use href="#lamp" transform="translate(1113 442)"/>
+
+  <!-- A Kyoto street grows from the quieter eastern bank. -->
+  <g>
+    <path d="M1050 435H1165V490H1050Z" fill="#765d50"/><path d="M1034 437L1108 397 1181 437 1175 444H1035Z" fill="#1e3445"/>
+    <path d="M1043 432L1108 402 1170 432" fill="none" stroke="#7b8588" stroke-width="3"/><path d="M1064 449H1154V479H1064Z" fill="url(#shoji)"/>
+    <path d="M1048 484H1168V494H1048Z" fill="#382f31"/><path d="M1057 445V484M1161 445V484" stroke="#3a3839" stroke-width="5"/>
+    <path d="M1177 448H1283V503H1177Z" fill="#8b7160"/><path d="M1167 450L1233 420 1295 450 1290 458H1168Z" fill="#253a48"/>
+    <path d="M1189 466H1272V493H1189Z" fill="url(#shoji)"/><path d="M1177 499H1285V507H1177Z" fill="#3a3639"/>
+    <path d="M1302 466H1408V517H1302Z" fill="#806556"/><path d="M1289 466L1355 433 1424 467 1417 474H1290Z" fill="#203746"/>
+    <path d="M1314 482H1397V507H1314Z" fill="url(#shoji)"/><path d="M1300 511H1411V521H1300Z" fill="#363337"/>
+  </g>
+  <g fill="#cc7862"><ellipse cx="1060" cy="459" rx="5" ry="8"/><ellipse cx="1160" cy="459" rx="5" ry="8"/><ellipse cx="1280" cy="478" rx="5" ry="8"/></g>
+  <g stroke="#f3c99b" opacity=".6"><path d="M1056 456H1064M1056 462H1064M1156 456H1164M1156 462H1164M1276 475H1284M1276 481H1284"/></g>
+
+  <!-- Five delicately tapered roofs, not a literal landmark collage. -->
+  <g>
+    <path d="M1228 236V188" stroke="#343e4b" stroke-width="3"/><path d="M1222 201H1234M1221 207H1235M1220 213H1236M1219 219H1237M1218 225H1238" stroke="#9a8c7e" stroke-width="2"/>
+    <path d="M1211 244H1245V277H1211Z" fill="#7a5f50"/><path d="M1189 251Q1212 243 1228 230Q1244 243 1267 251L1262 256H1194Z" fill="#233947"/><path d="M1193 250Q1215 242 1228 235Q1241 242 1263 250" fill="none" stroke="#8d9190" stroke-width="2"/>
+    <path d="M1204 281H1252V314H1204Z" fill="#8e6d57"/><path d="M1175 285Q1206 276 1228 264Q1250 276 1281 285L1274 291H1182Z" fill="#213746"/><path d="M1182 283Q1210 276 1228 269Q1246 276 1274 283" fill="none" stroke="#8b8a84" stroke-width="2"/>
+    <path d="M1197 318H1259V351H1197Z" fill="#89674f"/><path d="M1164 323Q1203 314 1228 302Q1253 314 1292 323L1283 330H1173Z" fill="#1c3443"/><path d="M1171 321Q1205 314 1228 307Q1251 314 1285 321" fill="none" stroke="#999188" stroke-width="2"/>
+    <path d="M1188 355H1268V390H1188Z" fill="#906f53"/><path d="M1150 364Q1197 352 1228 339Q1259 352 1306 364L1296 371H1160Z" fill="#203746"/><path d="M1158 362Q1197 353 1228 345Q1259 353 1298 362" fill="none" stroke="#898c88" stroke-width="2"/>
+    <path d="M1178 398H1278V436H1178Z" fill="#7d634e"/><path d="M1139 407Q1192 393 1228 380Q1264 393 1317 407L1307 415H1149Z" fill="#1d3544"/><path d="M1147 405Q1198 393 1228 386Q1258 393 1309 405" fill="none" stroke="#8b8a81" stroke-width="2"/>
+    <path d="M1194 410V440M1211 410V440M1245 410V440M1262 410V440M1202 370V392M1218 370V392M1238 370V392M1254 370V392M1209 329V352M1222 329V352M1234 329V352M1247 329V352M1215 291V315M1228 291V315M1241 291V315M1221 256V277M1235 256V277" stroke="#493d37" stroke-width="3"/>
+    <path d="M1216 414H1241V440H1216Z" fill="#e7b276"/><path d="M1171 437H1286V445H1171Z" fill="#3b3e3e"/>
+  </g>
+
+  <!-- A warm ryokan at the edge of the mountain forest. -->
+  <use href="#pine" transform="translate(1340 379) scale(.83)"/><use href="#pine" transform="translate(1379 365) scale(.99)"/><use href="#pine" transform="translate(1573 351) scale(1.35)"/><use href="#pine" transform="translate(1600 332) scale(1.52)"/>
+  <path d="M1414 437H1563V503H1414Z" fill="#826b57"/><path d="M1394 439L1488 387 1580 439 1574 448H1396Z" fill="#233d4b"/>
+  <path d="M1406 434L1488 395 1568 434" fill="none" stroke="#b0aaa0" stroke-width="4"/>
+  <path d="M1426 455H1553V489H1426Z" fill="url(#shoji)"/><path d="M1411 495H1567V506H1411Z" fill="#3e3b38"/><path d="M1419 447V495M1486 447V495M1559 447V495" stroke="#433f38" stroke-width="5"/>
+  <path d="M1443 524Q1486 506 1525 525Q1490 543 1443 524" fill="#182e3c"/><path d="M1451 522Q1487 513 1518 524Q1488 532 1451 522" fill="#72848c"/><path d="M1465 522Q1488 517 1509 524" fill="none" stroke="#c4cac2" stroke-width="1.5" opacity=".7"/>
+  <g fill="none" stroke="#d5d8d0" stroke-linecap="round"><path d="M1468 512C1448 490 1482 488 1464 467" stroke-width="3" opacity=".22"/><path d="M1489 511C1474 494 1506 483 1489 462" stroke-width="4" opacity=".23"/><path d="M1507 512C1496 500 1515 493 1507 478" stroke-width="2.5" opacity=".26"/></g>
+  <g fill="#637477"><ellipse cx="1446" cy="526" rx="9" ry="5"/><ellipse cx="1460" cy="532" rx="9" ry="5"/><ellipse cx="1477" cy="535" rx="11" ry="5"/><ellipse cx="1498" cy="533" rx="12" ry="5"/><ellipse cx="1519" cy="529" rx="10" ry="5"/></g>
+
+  <!-- Torii and winter branches frame the scene rather than the headline. -->
+  <g transform="translate(1333 489) scale(.68)">
+    <path d="M-47-47L-45 36H-33L-34-47M36-47L34 36H46L48-47" fill="#b86d59"/>
+    <path d="M-65-57Q0-45 65-57L63-44Q0-34-63-44Z" fill="#b36c57"/><path d="M-69-62Q0-48 69-62L67-55Q0-42-67-55Z" fill="#263b46"/><path d="M-57-22H57V-13H-57Z" fill="#c47d60"/><path d="M-5-45H5V-13H-5Z" fill="#9b6450"/>
+  </g>
+  <use href="#person" transform="translate(1137 510) scale(.9)"/><use href="#person" transform="translate(1152 513) scale(.86)"/>
+  <use href="#person" transform="translate(208 492)"/><use href="#person" transform="translate(222 488) scale(.93)"/>
+  <use href="#person" transform="translate(347 478) scale(.8)"/>
+  <g fill="none" stroke-linecap="round">
+    <path d="M1574 650Q1546 557 1570 475M1557 564L1511 520M1559 533L1585 488M1563 504L1538 470M1541 549L1501 542M1540 549L1531 514M1582 497L1599 481" stroke="#122839" stroke-width="6"/>
+    <path d="M37 650Q67 589 35 527M56 588L94 549M56 574L20 555M44 551L60 519M81 562L82 537M81 562L110 558" stroke="#142a3b" stroke-width="5"/>
+  </g>
+
+  <!-- Reflections are broken by the quiet surface, never mirror-perfect. -->
+  <g fill="none" stroke-linecap="round">
+    <path d="M535 492H556M524 503H548M511 516H541M498 531H527M478 551H515M465 568H502M449 587H491" stroke="#d48b72" stroke-width="3" opacity=".44"/>
+    <path d="M600 491H614M592 505H612M584 519H605M578 538H600M566 560H593M556 585H588M546 612H582" stroke="#e0bc88" stroke-width="2" opacity=".32"/>
+    <path d="M768 493H785M777 508H797M789 526H812M801 546H829M818 569H846M835 595H870M851 620H889" stroke="#d49e76" stroke-width="3" opacity=".36"/>
+    <path d="M410 583H439M398 597H433M381 616H423M363 637H407" stroke="#a1b8bd" stroke-width="2" opacity=".24"/>
+    <path d="M666 489H699M651 510H720M643 533H680M691 551H741M624 574H698M696 604H771M611 635H729M913 600H957M948 627H1011M305 632H342M918 558H939" stroke="#91a9b8" stroke-width="1.5" opacity=".27"/>
+  </g>
+  <path d="M0 555Q95 568 165 610L136 650H0Z M1074 596Q1302 549 1600 580V650H1152Z" fill="#1b3041"/>
+  <path d="M0 567Q102 577 154 615M1124 611Q1341 568 1600 590" fill="none" stroke="#4c5c66" stroke-width="2" opacity=".7"/>
+  <path d="M0 495H1600V650H0Z" fill="url(#shadow)"/>
+</svg>
