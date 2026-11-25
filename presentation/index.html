@@ -349,6 +349,21 @@ const ITEMS = [
     desc:'공주 Sentinel-2 패치(320 m)를 토지피복 네 가지로 분류하는 작은 CNN에 가림 민감도(Occlusion), 기울기 지도(Saliency), Integrated Gradients, Grad-CAM을 적용한다. 삭제 곡선(충실도)과 라벨 일치도(타당성)로 기여도 지도를 평가하고, 밴드별 기여와 오분류 패치를 분석한다(교재 9.3.3 사례와 같은 순서). 가로로 넘기는 웹 실습지 19장.',
     url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9nZW9haS1sYWI3Yi5odG1s' },
 
+  { id:'geoai-sem-w9-2026-11', cat:'lecture', course:'geoai-sem', week:9, date:'2026.11', type:'slide',
+    title:'GeoAI 이론 및 실습 — 9주차 실습 · 공간 교차검증 (Spatial Cross-Validation): 측정소 PM10',
+    desc:'전국 도시대기 측정소 517곳의 2024년 PM10 연평균(에어코리아 확정자료)을 랜덤포레스트로 예측하고, 무작위 교차검증과 교재의 공간 교차검증(군집·격자·시도·버퍼를 둔 공간 LOO)을 비교한다. 변수 구성에 따른 차이를 보고, 전국 1 km 격자에서 가장 가까운 측정소까지의 거리로 쓰임새에 맞는 검증을 고른다(교재 Ch.10). 가로로 넘기는 웹 실습지 24장.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9nZW9haS1sYWI4Lmh0bWw=' },
+
+  { id:'geoai-sem-w10-2026-11', cat:'lecture', course:'geoai-sem', week:10, date:'2026.11', type:'slide',
+    title:'GeoAI 이론 및 실습 — 10주차 실습 (1) · 거리 사진의 녹시율 (Green View Index): SegFormer 시맨틱 세그멘테이션',
+    desc:'공주 시가지의 Mapillary 거리 사진 303장을 SegFormer(Cityscapes 19 클래스)로 분할해 녹시율을 구하고, ESA WorldCover로 본 위에서의 녹지와 비교한다. 분할 결과를 눈으로 확인하고 녹지 클래스 정의에 따라 값이 어떻게 달라지는지 본다(교재 Ch.17·12.4). 가로로 넘기는 웹 실습지 19장.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9nZW9haS1sYWI5Lmh0bWw=' },
+
+  { id:'geoai-sem-w10b-2026-11', cat:'lecture', course:'geoai-sem', week:10, date:'2026.11', type:'slide',
+    title:'GeoAI 이론 및 실습 — 10주차 실습 (2) · 도로망 그래프와 통행속도 (Road Network Graph): 다음 시각 예측 · 빈 링크 채우기',
+    desc:'ITS 국가교통정보센터의 서울 도시고속도로 링크 1,679개 10분 속도로 표준노드링크 도로망 그래프를 만들고, 이웃 링크 정보가 다음 시각 예측과 자료가 빈 링크 채우기에 얼마나 도움이 되는지 비교한다. 그래프 합성곱의 계산을 선형 모델의 계수로 읽는다(교재 Ch.12). 가로로 넘기는 웹 실습지 17장.',
+    url:'aHR0cHM6Ly9jaGFuZ21pbmltLmNvbS9wcmVzZW50YXRpb24vcC9nZW9haS1sYWI5Yi5odG1s' },
+
   { id:'geoai-seminar-ot-2026-09', cat:'lecture', course:'geoai-sem', week:0, date:'2026.09', type:'slide',
     title:'GeoAI 이론 및 실습 — 오리엔테이션',
     desc:'대학원 강의 오리엔테이션 (2026.9.7.). 웹 슬라이드 22장.',
